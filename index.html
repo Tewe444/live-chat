@@ -31,7 +31,7 @@
 
     <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 flex flex-col">
 
-        <!-- Room selection card (Shown initially if no room joined) -->
+        <!-- Room selection card -->
         <div id="roomSelectionView" class="my-auto max-w-md mx-auto w-full bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
             <div class="text-center mb-6">
                 <div class="inline-flex p-3 rounded-full bg-indigo-500/10 text-indigo-400 mb-3 border border-indigo-500/20">
@@ -49,7 +49,7 @@
 
                 <div class="flex space-x-2">
                     <input type="text" id="customRoomCodeInput" placeholder="Eigener Raum-Code (optional)..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm uppercase">
-                    <button onclick="createRoom()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-3 rounded-xl transition shadow-lg shadow-indigo-600/20 flex items-center justify-center space-x-2 whitespace-nowrap">
+                    <button onclick="createRoom()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-3 rounded-xl transition shadow-lg shadow-indigo-600/20 flex items-center justify-center space-x-2 whitespace-nowrap cursor-pointer">
                         <i class="fa-solid fa-plus-circle"></i>
                         <span>Erstellen</span>
                     </button>
@@ -63,59 +63,55 @@
 
                 <div class="flex space-x-2">
                     <input type="text" id="roomCodeInput" placeholder="Raum-ID eingeben..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm uppercase">
-                    <button onclick="joinRoom()" class="bg-slate-800 hover:bg-slate-700 text-white font-medium px-5 py-3 rounded-xl transition border border-slate-700">
+                    <button onclick="joinRoom()" class="bg-slate-800 hover:bg-slate-700 text-white font-medium px-5 py-3 rounded-xl transition border border-slate-700 cursor-pointer">
                         Beitreten
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Collaborative Editor View (Hidden until room is active) -->
+        <!-- Collaborative Editor View -->
         <div id="editorView" class="hidden flex-1 flex flex-col space-y-4">
             
-            <!-- Room Info & Actions Bar -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center space-x-3 w-full sm:w-auto">
                     <div class="bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 flex items-center space-x-2">
                         <span class="text-xs text-slate-400">Raum:</span>
                         <span id="currentRoomIdDisplay" class="font-mono font-bold text-indigo-400 select-all">---</span>
                     </div>
-                    <button onclick="copyShareLink()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl text-xs transition border border-slate-700 flex items-center space-x-1.5">
+                    <button onclick="copyShareLink()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl text-xs transition border border-slate-700 flex items-center space-x-1.5 cursor-pointer">
                         <i class="fa-solid fa-share-nodes"></i>
                         <span>Link teilen</span>
                     </button>
                 </div>
 
                 <div class="flex items-center justify-between w-full sm:w-auto space-x-4">
-                    <div id="activeUsersList" class="flex items-center space-x-1 text-xs text-slate-400">
-                        <!-- Dynamic active users tags -->
-                    </div>
-                    <button onclick="leaveRoom()" class="text-rose-400 hover:text-rose-300 text-xs font-medium px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition">
+                    <div id="activeUsersList" class="flex items-center space-x-1 text-xs text-slate-400"></div>
+                    <button onclick="leaveRoom()" class="text-rose-400 hover:text-rose-300 text-xs font-medium px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition cursor-pointer">
                         Raum verlassen
                     </button>
                 </div>
             </div>
 
-            <!-- Main Editor Workspace -->
             <div class="flex-1 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col overflow-hidden shadow-xl">
                 <div class="bg-slate-950/50 px-4 py-2 border-b border-slate-800 flex items-center justify-between text-xs text-slate-400">
                     <div class="flex items-center space-x-2">
                         <i class="fa-solid fa-file-pen text-indigo-400"></i>
-                        <span>Live-Notizblock (wird dauerhaft gespeichert)</span>
+                        <span>Live-Notizblock (dauerhaft gespeichert)</span>
                     </div>
                     <div class="flex items-center space-x-4">
                         <span id="wordCount">0 Wörter</span>
                         <span id="charCount">0 Zeichen</span>
                     </div>
                 </div>
-                <textarea id="liveTextarea" placeholder="Beginne hier zu tippen... Alle verbundenen Geräte sehen deine Eingaben sofort in Echtzeit." class="flex-1 w-full bg-transparent p-4 sm:p-6 text-slate-100 placeholder-slate-600 focus:outline-none resize-none text-base leading-relaxed font-sans"></textarea>
+                <textarea id="liveTextarea" placeholder="Beginne hier zu tippen..." class="flex-1 w-full bg-transparent p-4 sm:p-6 text-slate-100 placeholder-slate-600 focus:outline-none resize-none text-base leading-relaxed font-sans"></textarea>
             </div>
 
         </div>
 
     </main>
 
-    <!-- Custom Notification Toast -->
+    <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-6 right-6 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-800 text-white px-4 py-3 rounded-xl border border-slate-700 shadow-2xl flex items-center space-x-3 text-sm z-50">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
         <span id="toastMessage">Aktion erfolgreich</span>
@@ -136,7 +132,6 @@
         let isRemoteUpdate = false;
         let typingTimeout = null;
 
-        // Initialize Firebase
         try {
             app = initializeApp(firebaseConfig);
             db = getFirestore(app);
@@ -169,7 +164,6 @@
             }
         }
 
-        // Check URL for room parameter on load
         window.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
             const roomParam = params.get('room');
@@ -195,9 +189,7 @@
                     return;
                 }
             } catch (e) {
-                console.error("Fehler beim Prüfen des Raumes:", e);
-                showToast("Fehler beim Erstellen des Raumes", "error");
-                return;
+                console.error("Fehler beim Prüfen:", e);
             }
 
             localStorage.setItem('live_text_username', username);
@@ -222,8 +214,8 @@
                     return;
                 }
             } catch (e) {
-                console.error("Fehler beim Prüfen des Raumes:", e);
-                showToast("Fehler beim Verbinden mit dem Raum", "error");
+                console.error("Fehler beim Prüfen:", e);
+                showToast("Raum gibt es nicht", "error");
                 return;
             }
 
@@ -237,23 +229,20 @@
             try {
                 const newUrl = `${window.location.pathname}?room=${roomId}`;
                 window.history.replaceState({ path: newUrl }, '', newUrl);
-            } catch (e) {
-                window.location.hash = `room=${roomId}`;
-            }
+            } catch (e) {}
 
             document.getElementById('roomSelectionView').classList.add('hidden');
             document.getElementById('editorView').classList.remove('hidden');
             document.getElementById('currentRoomIdDisplay').innerText = roomId;
 
             const roomRef = doc(db, 'artifacts', appId, 'public', 'data', `room_${roomId}`);
+            const userId = currentUser?.uid || 'anon_' + Math.random();
             
             try {
                 const docSnap = await getDoc(roomRef);
-                const userId = currentUser?.uid || 'anon_' + Math.random();
-
                 if (!docSnap.exists() || isNew) {
                     await setDoc(roomRef, {
-                        content: "Willkommen in deinem dauerhaften Live-Textraum!\n\nAlles, was du hier schreibst, bleibt permanent gespeichert.",
+                        content: "Willkommen im Live-Raum!\n\nAlles wird dauerhaft gespeichert.",
                         updatedAt: Date.now(),
                         users: { [userId]: { name: username, lastActive: Date.now() } }
                     });
@@ -261,13 +250,12 @@
                     const data = docSnap.data();
                     const users = data.users || {};
                     users[userId] = { name: username, lastActive: Date.now() };
-                    await updateDoc(roomRef, { users });
+                    await updateDoc(roomRef, { users, updatedAt: Date.now() });
                 }
             } catch (e) {
                 console.error("Error setting up room:", e);
             }
 
-            // Realtime listener
             unsubscribeDoc = onSnapshot(roomRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -289,13 +277,9 @@
 
                     renderActiveUsers(data.users || {});
                 }
-            }, (error) => {
-                console.error("Firestore subscription error:", error);
-                updateConnectionStatus(false, "Sync-Fehler");
             });
         }
 
-        // Handle text input and live broadcast
         const textarea = document.getElementById('liveTextarea');
         textarea.addEventListener('input', (e) => {
             if (isRemoteUpdate || !currentRoomId) return;
@@ -311,9 +295,7 @@
                         content: content,
                         updatedAt: Date.now()
                     });
-                } catch (err) {
-                    console.error("Error updating text:", err);
-                }
+                } catch (err) {}
             }, 100);
         });
 
@@ -352,28 +334,24 @@
             if (currentRoomId && currentUser) {
                 try {
                     const roomRef = doc(db, 'artifacts', appId, 'public', 'data', `room_${currentRoomId}`);
-                    // Remove user from active participants list in Firestore
                     await updateDoc(roomRef, {
-                        [`users.${currentUser.uid}`]: deleteField()
+                        [`users.${currentUser.uid}`]: deleteField(),
+                        updatedAt: Date.now()
                     });
-                } catch (e) {
-                    console.error("Error updating users on leave:", e);
-                }
+                } catch (e) {}
             }
 
             if (unsubscribeDoc) unsubscribeDoc();
-            currentRoomId = null;
+            currentRoomId = now = null;
             
             try {
                 const cleanUrl = window.location.pathname;
                 window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
-            } catch (e) {
-                window.location.hash = '';
-            }
+            } catch (e) {}
 
             document.getElementById('editorView').classList.add('hidden');
             document.getElementById('roomSelectionView').classList.remove('hidden');
-            showToast("Raum verlassen und Status gespeichert");
+            showToast("Raum verlassen");
         };
 
         function showToast(message, type = "success") {
