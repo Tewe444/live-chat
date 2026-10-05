@@ -44,12 +44,12 @@
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Dein Name / Gerät (optional)</label>
-                    <input type="text" id="usernameInput" placeholder="z. B. Laptop, Handy..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm">
+                    <input type="text" id="usernameInput" placeholder="z. B. Laptop, Handy..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30">
                 </div>
 
                 <div class="flex space-x-2">
-                    <input type="text" id="customRoomCodeInput" placeholder="Eigener Raum-Code (optional)..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm uppercase">
-                    <button onclick="createRoom()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-3 rounded-xl transition shadow-lg shadow-indigo-600/20 flex items-center justify-center space-x-2 whitespace-nowrap cursor-pointer">
+                    <input type="text" id="customRoomCodeInput" placeholder="Eigener Raum-Code (optional)..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30">
+                    <button onclick="createRoom()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-medium px-5 py-3 rounded-xl transition shadow-lg shadow-indigo-600/20 flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-plus-circle"></i>
                         <span>Erstellen</span>
                     </button>
@@ -62,7 +62,7 @@
                 </div>
 
                 <div class="flex space-x-2">
-                    <input type="text" id="roomCodeInput" placeholder="Raum-ID eingeben..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm uppercase">
+                    <input type="text" id="roomCodeInput" placeholder="Raum-ID eingeben..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/30">
                     <button onclick="joinRoom()" class="bg-slate-800 hover:bg-slate-700 text-white font-medium px-5 py-3 rounded-xl transition border border-slate-700 cursor-pointer">
                         Beitreten
                     </button>
@@ -78,7 +78,7 @@
                         <span class="text-xs text-slate-400">Raum:</span>
                         <span id="currentRoomIdDisplay" class="font-mono font-bold text-indigo-400 select-all">---</span>
                     </div>
-                    <button onclick="copyShareLink()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl text-xs transition border border-slate-700 flex items-center space-x-1.5 cursor-pointer">
+                    <button onclick="copyShareLink()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-xl text-xs transition border border-slate-700 flex items-center space-x-2">
                         <i class="fa-solid fa-share-nodes"></i>
                         <span>Link teilen</span>
                     </button>
@@ -86,7 +86,7 @@
 
                 <div class="flex items-center justify-between w-full sm:w-auto space-x-4">
                     <div id="activeUsersList" class="flex items-center space-x-1 text-xs text-slate-400"></div>
-                    <button onclick="leaveRoom()" class="text-rose-400 hover:text-rose-300 text-xs font-medium px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition cursor-pointer">
+                    <button onclick="leaveRoom()" class="text-rose-400 hover:text-rose-300 text-xs font-medium px-3 py-1.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition">
                         Raum verlassen
                     </button>
                 </div>
@@ -103,14 +103,14 @@
                         <span id="charCount">0 Zeichen</span>
                     </div>
                 </div>
-                <textarea id="liveTextarea" placeholder="Beginne hier zu tippen..." class="flex-1 w-full bg-transparent p-4 sm:p-6 text-slate-100 placeholder-slate-600 focus:outline-none resize-none text-base leading-relaxed font-sans"></textarea>
+                <textarea id="liveTextarea" placeholder="Beginne hier zu tippen..." class="flex-1 w-full bg-transparent p-4 sm:p-6 text-slate-100 placeholder-slate-600 focus:outline-none resize-none"></textarea>
             </div>
 
         </div>
 
     </main>
 
-    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-800 text-white px-4 py-3 rounded-xl border border-slate-700 shadow-2xl flex items-center space-x-3 text-sm z-50">
+    <div id="toast" class="fixed bottom-6 right-6 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-800 text-white px-4 py-3 rounded-xl border border-slate-700 shadow-2xl flex items-center space-x-3">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
         <span id="toastMessage">Aktion erfolgreich</span>
     </div>
@@ -121,7 +121,18 @@
         import { getFirestore, doc, setDoc, getDoc, onSnapshot, updateDoc, deleteField } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'live-text-collab-v1';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+        
+        // Firebase Konfiguration
+        const fallbackConfig = {
+            apiKey: "AIzaSyATCaZy2CJ7Ig3Eed841bo30ZRPH0kVtVM",
+            authDomain: "livetextapp-d5fb8.firebaseapp.com",
+            projectId: "livetextapp-d5fb8",
+            storageBucket: "livetextapp-d5fb8.appspot.com",
+            messagingSenderId: "968443356315",
+            appId: "1:968443356315:web:ad21cd26d2ddd5d078923e"
+        };
+        
+        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : JSON.stringify(fallbackConfig));
 
         let app, db, auth;
         let currentRoomId = null;
