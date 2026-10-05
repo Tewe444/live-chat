@@ -183,7 +183,8 @@
 
             if (db) {
                 try {
-                    const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
+                    // Korrigierter Pfad mit gerader Segmentanzahl: artifacts (Coll) -> appId (Doc) -> rooms (Coll) -> roomId (Doc)
+                    const roomRef = doc(db, 'artifacts', appId, 'rooms', roomId);
                     const docSnap = await getDoc(roomRef);
 
                     if (docSnap.exists()) {
@@ -213,7 +214,7 @@
 
             if (db) {
                 try {
-                    const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
+                    const roomRef = doc(db, 'artifacts', appId, 'rooms', roomId);
                     const docSnap = await getDoc(roomRef);
 
                     if (!docSnap.exists()) {
@@ -244,7 +245,7 @@
             document.getElementById('currentRoomIdDisplay').innerText = roomId;
 
             if (db) {
-                const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
+                const roomRef = doc(db, 'artifacts', appId, 'rooms', roomId);
                 const userId = currentUser?.uid || 'anon_' + Math.random();
                 
                 try {
@@ -300,7 +301,7 @@
             clearTimeout(typingTimeout);
             typingTimeout = setTimeout(async () => {
                 try {
-                    const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', currentRoomId);
+                    const roomRef = doc(db, 'artifacts', appId, 'rooms', currentRoomId);
                     await updateDoc(roomRef, {
                         content: content,
                         updatedAt: Date.now()
@@ -343,7 +344,7 @@
         window.leaveRoom = async () => {
             if (currentRoomId && currentUser && db) {
                 try {
-                    const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', currentRoomId);
+                    const roomRef = doc(db, 'artifacts', appId, 'rooms', currentRoomId);
                     await updateDoc(roomRef, {
                         [`users.${currentUser.uid}`]: deleteField(),
                         updatedAt: Date.now()
