@@ -62,7 +62,7 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-user-pen"></i>
                             </span>
-                            <input type="text" id="username-input" placeholder="Zufälliger Name falls leer..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all">
+                            <input type="text" id="username-input" placeholder="Zufälliger Name falls leer..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
                     </div>
 
@@ -88,7 +88,7 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-key"></i>
                             </span>
-                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all uppercase">
+                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
                         <button id="join-room-btn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2">
                             <i class="fa-solid fa-arrow-right-to-bracket"></i>
@@ -137,7 +137,7 @@
 
                 <!-- Textarea -->
                 <div class="flex-1 p-4 bg-slate-50/50 flex flex-col overflow-hidden">
-                    <textarea id="main-editor" class="flex-1 w-full p-4 bg-white border border-slate-200 rounded-xl shadow-inner resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-slate-700 text-base leading-relaxed custom-scrollbar" placeholder="Beginne hier zu schreiben... Deine Änderungen werden in Echtzeit synchronisiert."></textarea>
+                    <textarea id="main-editor" class="flex-1 w-full p-4 bg-white border border-slate-200 rounded-xl shadow-inner resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent custom-scrollbar"></textarea>
                 </div>
             </div>
 
@@ -264,12 +264,12 @@
             const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
             
             try {
-                const roomRef = doc(db, 'artifacts', 'live-text-collab-v1', 'public', 'rooms', newRoomId);
-            await setDoc(roomRef, {
-                content: "Willkommen in deinem neuen Raum!",
-                createdAt: serverTimestamp(),
-                host: currentUser.id
-            });
+                const roomRef = doc(db, 'rooms', newRoomId);
+                await setDoc(roomRef, {
+                    content: "Willkommen in deinem neuen Raum!",
+                    createdAt: serverTimestamp(),
+                    host: currentUser.id
+                });
                 await enterRoom(newRoomId);
             } catch (err) {
                 console.error(err);
@@ -291,7 +291,7 @@
             setupUser();
 
             try {
-                const roomRef = doc(db, 'artifacts', 'live-text-collab-v1', 'public', 'rooms', roomId);
+                const roomRef = doc(db, 'rooms', roomId);
                 const snap = await getDoc(roomRef);
                 if (!snap.exists()) {
                     showError("Raum existiert nicht!");
@@ -310,7 +310,7 @@
             lobbyView.classList.add('hidden');
             editorView.classList.remove('hidden');
 
-            const roomRef = doc(db, 'artifacts', 'live-text-collab-v1', 'public', 'rooms', roomId);
+            const roomRef = doc(db, 'rooms', roomId);
             
             // Text Live-Sync
             textUnsubscribe = onSnapshot(roomRef, (docSnap) => {
@@ -324,13 +324,13 @@
             });
 
             // Anwesenheit (Presence) Tracking
-            const userPresenceRef = doc(db, 'artifacts', 'live-text-collab-v1', 'public', 'rooms', roomId, 'presence', currentUser.id);
+            const userPresenceRef = doc(db, 'rooms', roomId, 'presence', currentUser.id);
             await setDoc(userPresenceRef, {
                 name: currentUser.name,
                 lastSeen: serverTimestamp()
             });
 
-            const presenceCol = collection(db, 'artifacts', 'live-text-collab-v1', 'public', 'rooms', roomId, 'presence');
+            const presenceCol = collection(db, 'rooms', roomId, 'presence');
             presenceUnsubscribe = onSnapshot(presenceCol, (snapshot) => {
                 let users = [];
                 snapshot.forEach(doc => users.push(doc.data()));
@@ -348,7 +348,7 @@
         mainEditor.addEventListener('input', async () => {
             if (!currentRoomId || !isOnline) return;
             localChange = true;
-            const roomRef = doc(db, 'artifacts', 'live-text-collab-v1', 'public', 'rooms', currentRoomId);
+            const roomRef = doc(db, 'rooms', currentRoomId);
             try {
                 await updateDoc(roomRef, {
                     content: mainEditor.value,
@@ -366,7 +366,7 @@
 
             if (currentRoomId && isOnline) {
                 try {
-                    const userPresenceRef = doc(db, 'artifacts', 'live-text-collab-v1', 'public', 'rooms', currentRoomId, 'presence', currentUser.id);
+                    const userPresenceRef = doc(db, 'rooms', currentRoomId, 'presence', currentUser.id);
                     await setDoc(userPresenceRef, { active: false });
                 } catch(e) {}
             }
@@ -382,7 +382,7 @@
             if (confirm("Möchtest du den gesamten Text löschen?")) {
                 mainEditor.value = '';
                 if (currentRoomId && isOnline) {
-                    const roomRef = doc(db, 'artifacts', 'live-text-collab-v1', 'public', 'rooms', currentRoomId);
+                    const roomRef = doc(db, 'rooms', currentRoomId);
                     await updateDoc(roomRef, { content: '' });
                 }
             }
