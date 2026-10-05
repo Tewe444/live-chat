@@ -265,11 +265,11 @@
             
             try {
                 const roomRef = doc(db, 'artifacts', 'live-text-collab-v1', 'public', 'rooms', newRoomId);
-                await setDoc(roomRef, {
-                    content: '',
-                    createdAt: serverTimestamp(),
-                    host: currentUser.id
-                });
+            await setDoc(roomRef, {
+                content: "Willkommen in deinem neuen Raum!",
+                createdAt: serverTimestamp(),
+                host: currentUser.id
+            });
                 await enterRoom(newRoomId);
             } catch (err) {
                 console.error(err);
