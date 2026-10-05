@@ -182,7 +182,7 @@
             }
 
             try {
-                const roomRef = doc(db, 'artifacts', appId, 'public', 'data', `room_${roomId}`);
+                const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
                 const docSnap = await getDoc(roomRef);
 
                 if (docSnap.exists()) {
@@ -210,7 +210,7 @@
             }
 
             try {
-                const roomRef = doc(db, 'artifacts', appId, 'public', 'data', `room_${roomId}`);
+                const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
                 const docSnap = await getDoc(roomRef);
 
                 if (!docSnap.exists()) {
@@ -239,7 +239,7 @@
             document.getElementById('editorView').classList.remove('hidden');
             document.getElementById('currentRoomIdDisplay').innerText = roomId;
 
-            const roomRef = doc(db, 'artifacts', appId, 'public', 'data', `room_${roomId}`);
+            const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
             const userId = currentUser?.uid || 'anon_' + Math.random();
             
             try {
@@ -294,7 +294,7 @@
             clearTimeout(typingTimeout);
             typingTimeout = setTimeout(async () => {
                 try {
-                    const roomRef = doc(db, 'artifacts', appId, 'public', 'data', `room_${currentRoomId}`);
+                    const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', currentRoomId);
                     await updateDoc(roomRef, {
                         content: content,
                         updatedAt: Date.now()
@@ -337,12 +337,14 @@
         window.leaveRoom = async () => {
             if (currentRoomId && currentUser) {
                 try {
-                    const roomRef = doc(db, 'artifacts', appId, 'public', 'data', `room_${currentRoomId}`);
+                    const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', currentRoomId);
                     await updateDoc(roomRef, {
                         [`users.${currentUser.uid}`]: deleteField(),
                         updatedAt: Date.now()
                     });
-                } catch (e) {}
+                } catch (e) {
+                    console.error("Fehler beim Verlassen:", e);
+                }
             }
 
             if (unsubscribeDoc) {
