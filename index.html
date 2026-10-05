@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Text Collab - Echtzeit Kollaboration</title>
+    <title>Live Text</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -13,6 +13,7 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        canvas { touch-action: none; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 h-screen flex flex-col overflow-hidden">
@@ -24,7 +25,7 @@
                 <i class="fa-solid fa-feather-pointed text-lg"></i>
             </div>
             <div>
-                <h1 class="font-bold text-slate-900 leading-tight">LiveText Collab</h1>
+                <h1 class="font-bold text-slate-900 leading-tight">LiveText</h1>
                 <p class="text-xs text-slate-500">Echtzeit-Texteditor</p>
             </div>
         </div>
@@ -51,18 +52,18 @@
                     <div class="w-16 h-16 bg-indigo-50 text-indigo-600 rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-inner">
                         <i class="fa-solid fa-comments"></i>
                     </div>
-                    <h2 class="text-2xl font-bold text-slate-900">Gemeinsam Schreiben</h2>
+                    <h2 class="text-2xl font-bold text-slate-900">Gemeinsam Schreiben & Malen</h2>
                     <p class="text-sm text-slate-500">Erstelle einen neuen Raum oder trete einem bestehenden Raum bei.</p>
                 </div>
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Dein Name (optional)</label>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Dein Name</label>
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-user-pen"></i>
                             </span>
-                            <input type="text" id="username-input" placeholder="Zufälliger Name falls leer..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" id="username-input" placeholder="Name eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
                     </div>
 
@@ -82,7 +83,7 @@
                         <div class="flex-grow border-t border-slate-200"></div>
                     </div>
 
-                    <!-- Raum beitreten -->
+                    <!-- Raum beitreten + Letzte Räume Button -->
                     <div class="space-y-2">
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -90,10 +91,27 @@
                             </span>
                             <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
-                        <button id="join-room-btn" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-                            <span>Raum betreten</span>
-                        </button>
+                        <div class="flex space-x-2">
+                            <button id="join-room-btn" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                <span>Raum betreten</span>
+                            </button>
+                            <button id="toggle-recent-modal-btn" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 px-3.5 py-2.5 rounded-xl font-medium text-sm flex items-center space-x-1.5 transition-all" title="Letzte Räume & Favoriten">
+                                <i class="fa-solid fa-star text-amber-500"></i>
+                                <span class="hidden sm:inline">Räume</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Liste der letzten & favorisierten Räume -->
+                    <div id="recent-rooms-container" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2 mt-2">
+                        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider flex justify-between items-center">
+                            <span>Letzte Räume & Favoriten</span>
+                            <span class="text-[10px] text-slate-400"></span>
+                        </div>
+                        <div id="recent-rooms-list" class="space-y-1 max-h-40 overflow-y-auto custom-scrollbar">
+                            <!-- Dynamisch befüllt -->
+                        </div>
                     </div>
                 </div>
 
@@ -101,10 +119,10 @@
             </div>
         </div>
 
-        <!-- View 2: Editor (Hauptansicht) -->
+        <!-- View 2: Editor, Whiteboard & Chat (Hauptansicht) -->
         <div id="editor-view" class="hidden flex-1 flex flex-col md:flex-row h-full w-full overflow-hidden">
             
-            <!-- Linke Spalte: Editor & Toolbar -->
+            <!-- Linke Spalte: Editor & Text-Tools -->
             <div class="flex-1 flex flex-col h-full overflow-hidden bg-white border-r border-slate-200">
                 <!-- Editor Header / Toolbar -->
                 <div class="bg-white border-b border-slate-200 px-4 py-3 flex flex-wrap items-center justify-between gap-3 shrink-0">
@@ -117,6 +135,9 @@
                         <div class="flex items-center space-x-2">
                             <span class="text-xs text-slate-400 font-medium uppercase">Raum:</span>
                             <span id="current-room-badge" class="font-mono text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 select-all">---</span>
+                            <button id="toggle-room-fav-btn" class="text-slate-300 hover:text-amber-400 p-1 text-xs transition-colors" title="Als Favorit speichern">
+                                <i class="fa-solid fa-star"></i>
+                            </button>
                             <button id="copy-room-btn" class="text-slate-400 hover:text-indigo-600 p-1 text-xs transition-colors" title="Raum-Code kopieren">
                                 <i class="fa-regular fa-copy"></i>
                             </button>
@@ -124,53 +145,125 @@
                     </div>
 
                     <div class="flex items-center space-x-2">
+                        <!-- Voice Chat Button -->
+                        <button id="voice-chat-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300">
+                            <i id="voice-icon" class="fa-solid fa-microphone-slash text-slate-400"></i>
+                            <span id="voice-text"></span>
+                        </button>
+
                         <button id="clear-text-btn" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1 border border-rose-200">
                             <i class="fa-solid fa-trash-can"></i>
-                            <span>Leeren</span>
+                            <span>Text leeren</span>
                         </button>
+
                         <button id="export-txt-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded-lg transition-all flex items-center space-x-1 shadow-sm">
                             <i class="fa-solid fa-download"></i>
                             <span>Speichern</span>
                         </button>
+
+                        <!-- Öffnen-Button direkt rechts von Speichern (Nur "<" als Text) -->
+                        <button id="open-canvas-btn" class="hidden px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold rounded-lg transition-all items-center justify-center border border-indigo-200" title="Malfläche öffnen">&lt;</button>
                     </div>
                 </div>
 
                 <!-- Textarea -->
                 <div class="flex-1 p-4 bg-slate-50/50 flex flex-col overflow-hidden">
-                    <textarea id="main-editor" class="flex-1 w-full p-4 bg-white border border-slate-200 rounded-xl shadow-inner resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent custom-scrollbar"></textarea>
+                    <textarea id="main-editor" placeholder="Sicherheits-Info: Diese Chats sind öffentlich, nicht privat. Wenn also jemand weiß, was er tun muss, kann er alles in diesen Chats herausfinden." class="flex-1 w-full p-4 bg-white border border-slate-200 rounded-xl shadow-inner resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent custom-scrollbar"></textarea>
                 </div>
             </div>
 
-            <!-- Rechte Spalte: Aktive Nutzer & Info -->
-            <div class="w-full md:w-72 bg-slate-50 border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-48 md:h-full">
-                <div class="p-4 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
-                    <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider flex items-center space-x-2">
-                        <i class="fa-solid fa-users text-indigo-500"></i>
-                        <span>Anwesend im Raum</span>
-                    </h3>
-                    <span id="active-users-count" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full">1</span>
+            <!-- Mittlere Spalte: Malfläche (Canvas) - Einklappbar -->
+            <div id="canvas-container" class="w-full md:w-80 bg-white border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-64 md:h-full transition-all">
+                <div class="p-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
+                    <div class="flex items-center space-x-2">
+                        <!-- STREAMING_CHUNK:Updating collapse button to use only > symbol... -->
+                        <!-- Button links von der Malfläche zum Einklappen -->
+                        <button id="close-canvas-btn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all" title="Malfläche einklappen">&gt;</button>
+                        <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-paintbrush text-indigo-500"></i>
+                            <span>Zeichenfläche</span>
+                        </h3>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="color" id="brush-color" value="#4f46e5" class="w-6 h-6 border-0 rounded cursor-pointer bg-transparent" title="Stiftfarbe">
+                        <button id="clear-canvas-btn" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-medium rounded border border-rose-200" title="Zeichnung löschen">
+                            <i class="fa-solid fa-eraser"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar" id="active-users-list">
+                <div class="flex-1 relative bg-slate-100 overflow-hidden cursor-crosshair">
+                    <canvas id="paint-canvas" class="w-full h-full block bg-white"></canvas>
+                </div>
+            </div>
+
+            <!-- Äußerste rechte Spalte: Aktive Nutzer & Chat -->
+            <div class="w-full md:w-72 bg-slate-50 border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-80 md:h-full overflow-hidden">
+                <!-- Anwesend Bereich -->
+                <div class="p-3 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
+                    <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider flex items-center space-x-2">
+                        <i class="fa-solid fa-users text-indigo-500"></i>
+                        <span>Anwesend</span>
+                    </h3>
+                    <span id="active-users-count" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                </div>
+                
+                <div class="max-h-36 overflow-y-auto p-2 space-y-1.5 custom-scrollbar border-b border-slate-200 shrink-0 bg-slate-50/50" id="active-users-list">
                     <!-- Wird dynamisch gefüllt -->
                 </div>
 
-                <div class="p-3 bg-white border-t border-slate-200 text-center text-xs text-slate-400 shrink-0">
-                    Sicherer Cloud-Sync aktiv
+                <!-- Chat Bereich (SMS Style) -->
+                <div class="flex-1 flex flex-col min-h-0 bg-white">
+                    <div class="p-2 border-b border-slate-100 bg-slate-50 flex items-center justify-between shrink-0">
+                        <h3 class="font-semibold text-[11px] text-slate-500 uppercase tracking-wider flex items-center space-x-1.5">
+                            <i class="fa-solid fa-comments text-indigo-500"></i>
+                            <span>Chat</span>
+                        </h3>
+                        <span class="text-[10px] text-slate-400"></span>
+                    </div>
+
+                    <!-- Nachrichten Liste -->
+                    <div id="chat-messages-list" class="flex-1 p-2 overflow-hidden flex flex-col justify-end space-y-2 bg-slate-50/30">
+                        <!-- Chat Nachrichten kommen hier rein -->
+                    </div>
+
+                    <!-- Chat Eingabe -->
+                    <form id="chat-form" class="p-2 border-t border-slate-200 flex space-x-1.5 bg-white shrink-0">
+                        <input type="text" id="chat-input" placeholder="Nachricht Schreiben..." autocomplete="off" class="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                        <button type="submit" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-medium transition-colors">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="p-2 bg-slate-100 border-t border-slate-200 text-center text-[10px] text-slate-400 shrink-0">
+                    Maximal 10 Personen
                 </div>
             </div>
 
         </div>
     </main>
 
+    <!-- Bestätigungs Modal Dialog -->
+    <div id="custom-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-xl border border-slate-100">
+            <h3 id="modal-title" class="text-base font-bold text-slate-800">Bestätigung</h3>
+            <p id="modal-message" class="text-xs text-slate-600">Bist du sicher?</p>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button id="modal-cancel-btn" class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-colors">Abbrechen</button>
+                <button id="modal-confirm-btn" class="px-3.5 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-medium rounded-lg transition-colors">Bestätigen</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audios Container für t -->
+    <div id="audio-container" class="hidden"></div>
+
     <!-- Firebase SDKs via CDN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, onSnapshot, updateDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, collection, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // ==========================================
-        // DEINE ECHTEN FIREBASE DATEN HIER EINGETRAGEN
-        // ==========================================
         const fallbackConfig = {
             apiKey: "AIzaSyATCaZy2CJ7Ig3Eed841bo30ZRPH0kVtVM",
             authDomain: "livetextapp-d5fb8.firebaseapp.com",
@@ -184,7 +277,6 @@
         let db;
         let isOnline = false;
 
-        // Verbindung zu Firebase initialisieren
         try {
             app = initializeApp(fallbackConfig);
             db = getFirestore(app);
@@ -201,7 +293,7 @@
             if (online) {
                 statusEl.className = "flex items-center space-x-2 px-3 py-1 bg-emerald-50 border border-emerald-200 rounded-full text-xs font-medium text-emerald-700";
                 statusEl.querySelector('span').className = "w-2 h-2 rounded-full bg-emerald-500";
-                textEl.textContent = "Online (Live)";
+                textEl.textContent = "Online";
             } else {
                 statusEl.className = "flex items-center space-x-2 px-3 py-1 bg-rose-50 border border-rose-200 rounded-full text-xs font-medium text-rose-700";
                 statusEl.querySelector('span').className = "w-2 h-2 rounded-full bg-rose-500";
@@ -209,20 +301,158 @@
             }
         }
 
-        // App State
         let currentRoomId = null;
         let currentUser = {
             id: 'user_' + Math.random().toString(36).substring(2, 9),
             name: 'Gast-' + Math.floor(Math.random() * 9000 + 1000)
         };
+        let userDisplayNames = {};
+
+        const usernameInput = document.getElementById('username-input');
+
+        const savedUsername = localStorage.getItem('saved_collab_username');
+        if (savedUsername) {
+            usernameInput.value = savedUsername;
+            currentUser.name = savedUsername;
+        }
+
+        function showConfirmModal(title, message, onConfirm) {
+            const modal = document.getElementById('custom-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-message').textContent = message;
+            modal.classList.remove('hidden');
+
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+
+            const handleConfirm = () => {
+                modal.classList.add('hidden');
+                cleanup();
+                onConfirm();
+            };
+
+            const handleCancel = () => {
+                modal.classList.add('hidden');
+                cleanup();
+            };
+
+            const cleanup = () => {
+                confirmBtn.removeEventListener('click', handleConfirm);
+                cancelBtn.removeEventListener('click', handleCancel);
+            };
+
+            confirmBtn.addEventListener('click', handleConfirm);
+            cancelBtn.addEventListener('click', handleCancel);
+        }
+
+        function getSavedRooms() {
+            try {
+                return JSON.parse(localStorage.getItem('saved_collab_rooms')) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveRoomsToStorage(rooms) {
+            localStorage.setItem('saved_collab_rooms', JSON.stringify(rooms));
+        }
+
+        function addRoomToHistory(roomId) {
+            let rooms = getSavedRooms();
+            const existingIndex = rooms.findIndex(r => r.id === roomId);
+            let isFav = false;
+
+            if (existingIndex !== -1) {
+                isFav = rooms[existingIndex].favorite;
+                rooms.splice(existingIndex, 1);
+            }
+
+            rooms.unshift({ id: roomId, favorite: isFav, timestamp: Date.now() });
+
+            const favorites = rooms.filter(r => r.favorite);
+            const nonFavorites = rooms.filter(r => !r.favorite).slice(0, 2);
+            
+            rooms = [...favorites, ...nonFavorites];
+            saveRoomsToStorage(rooms);
+            renderRecentRoomsUI();
+        }
+
+        function toggleFavorite(roomId) {
+            let rooms = getSavedRooms();
+            const room = rooms.find(r => r.id === roomId);
+            if (room) {
+                room.favorite = !room.favorite;
+            } else {
+                rooms.unshift({ id: roomId, favorite: true, timestamp: Date.now() });
+            }
+            saveRoomsToStorage(rooms);
+            renderRecentRoomsUI();
+            updateRoomFavButtonState();
+        }
+
+        function renderRecentRoomsUI() {
+            const rooms = getSavedRooms();
+            const listEl = document.getElementById('recent-rooms-list');
+            
+            if (rooms.length === 0) {
+                listEl.innerHTML = '<div class="text-xs text-slate-400 py-1">Keine gespeicherten Räume</div>';
+                return;
+            }
+
+            listEl.innerHTML = rooms.map(r => `
+                <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-200 hover:border-indigo-300 transition-all">
+                    <button onclick="window.selectRoomCode('${r.id}')" class="text-xs font-mono font-bold text-indigo-600 hover:underline flex items-center space-x-1.5">
+                        <i class="fa-solid fa-door-open text-slate-400"></i>
+                        <span>${r.id}</span>
+                    </button>
+                    <button onclick="window.toggleFavRoom('${r.id}')" class="text-xs p-1 ${r.favorite ? 'text-amber-400' : 'text-slate-300 hover:text-amber-400'}" title="Favorit umschalten">
+                        <i class="fa-solid fa-star"></i>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        window.selectRoomCode = (id) => {
+            document.getElementById('room-id-input').value = id;
+        };
+
+        window.toggleFavRoom = (id) => {
+            toggleFavorite(id);
+        };
+
+        function updateRoomFavButtonState() {
+            if (!currentRoomId) return;
+            const rooms = getSavedRooms();
+            const room = rooms.find(r => r.id === currentRoomId);
+            const favBtn = document.getElementById('toggle-room-fav-btn');
+            if (room && room.favorite) {
+                favBtn.className = "text-amber-400 hover:text-amber-500 p-1 text-xs transition-colors";
+            } else {
+                favBtn.className = "text-slate-300 hover:text-amber-400 p-1 text-xs transition-colors";
+            }
+        }
+
+        document.getElementById('toggle-recent-modal-btn').addEventListener('click', () => {
+            const container = document.getElementById('recent-rooms-container');
+            container.classList.toggle('hidden');
+            renderRecentRoomsUI();
+        });
+
+        document.getElementById('toggle-room-fav-btn').addEventListener('click', () => {
+            if (currentRoomId) {
+                toggleFavorite(currentRoomId);
+            }
+        });
+
         let textUnsubscribe = null;
         let presenceUnsubscribe = null;
+        let signalUnsubscribe = null;
+        let chatUnsubscribe = null;
         let localChange = false;
+        let presenceInterval = null;
 
-        // UI Elemente
         const lobbyView = document.getElementById('lobby-view');
         const editorView = document.getElementById('editor-view');
-        const usernameInput = document.getElementById('username-input');
         const roomIdInput = document.getElementById('room-id-input');
         const createRoomBtn = document.getElementById('create-room-btn');
         const joinRoomBtn = document.getElementById('join-room-btn');
@@ -238,6 +468,47 @@
         const activeUsersList = document.getElementById('active-users-list');
         const activeUsersCount = document.getElementById('active-users-count');
 
+        // Malen Elements & Toggle
+        const canvasContainer = document.getElementById('canvas-container');
+        const openCanvasBtn = document.getElementById('open-canvas-btn');
+        const closeCanvasBtn = document.getElementById('close-canvas-btn');
+        const canvas = document.getElementById('paint-canvas');
+        const ctx = canvas.getContext('2d');
+        const brushColor = document.getElementById('brush-color');
+        const clearCanvasBtn = document.getElementById('clear-canvas-btn');
+        let isDrawing = false;
+        let localDrawing = false;
+
+        // Malfläche ausklappen / einklappen Toggle Logic
+        closeCanvasBtn.addEventListener('click', () => {
+            canvasContainer.classList.add('hidden');
+            openCanvasBtn.classList.remove('hidden');
+            openCanvasBtn.classList.add('flex');
+        });
+
+        openCanvasBtn.addEventListener('click', () => {
+            canvasContainer.classList.remove('hidden');
+            openCanvasBtn.classList.add('hidden');
+            openCanvasBtn.classList.remove('flex');
+            setTimeout(resizeCanvas, 50);
+        });
+
+        function resizeCanvas() {
+            if (canvasContainer.classList.contains('hidden')) return;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            if (canvas.width !== rect.width || canvas.height !== rect.height) {
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = canvas.width;
+                tempCanvas.height = canvas.height;
+                const tempCtx = tempCanvas.getContext('2d');
+                tempCtx.drawImage(canvas, 0, 0);
+
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+                ctx.drawImage(tempCanvas, 0, 0);
+            }
+        }
+
         function showError(msg) {
             lobbyError.textContent = msg;
             lobbyError.classList.remove('hidden');
@@ -248,13 +519,15 @@
             const enteredName = usernameInput.value.trim();
             if (enteredName) {
                 currentUser.name = enteredName;
+                localStorage.setItem('saved_collab_username', enteredName);
+            } else {
+                localStorage.removeItem('saved_collab_username');
             }
             displayUsername.textContent = currentUser.name;
             userBadge.classList.remove('hidden');
             userBadge.classList.add('flex');
         }
 
-        // Raum erstellen
         createRoomBtn.addEventListener('click', async () => {
             if (!isOnline) {
                 showError("Keine Verbindung zur Cloud möglich.");
@@ -266,7 +539,8 @@
             try {
                 const roomRef = doc(db, 'rooms', newRoomId);
                 await setDoc(roomRef, {
-                    content: "Willkommen in deinem neuen Raum!",
+                    content: "",
+                    drawing: "",
                     createdAt: serverTimestamp(),
                     host: currentUser.id
                 });
@@ -277,7 +551,6 @@
             }
         });
 
-        // Raum beitreten
         joinRoomBtn.addEventListener('click', async () => {
             if (!isOnline) {
                 showError("Keine Verbindung zur Cloud möglich.");
@@ -297,6 +570,28 @@
                     showError("Raum existiert nicht!");
                     return;
                 }
+
+                const presenceSnap = await getDocs(collection(db, 'rooms', roomId, 'presence'));
+                const now = Date.now();
+                let activeCount = 0;
+                presenceSnap.forEach(d => {
+                    if (d.id === currentUser.id) return;
+                    const data = d.data();
+                    if (!data.lastSeen) {
+                        activeCount++;
+                    } else {
+                        const lastSeenTime = data.lastSeen.toMillis ? data.lastSeen.toMillis() : now;
+                        if (now - lastSeenTime < 25000) {
+                            activeCount++;
+                        }
+                    }
+                });
+
+                if (activeCount >= 10) {
+                    showError("Dieser Raum ist voll (maximal 10 Personen erlaubt).");
+                    return;
+                }
+
                 await enterRoom(roomId);
             } catch (err) {
                 console.error(err);
@@ -307,12 +602,16 @@
         async function enterRoom(roomId) {
             currentRoomId = roomId;
             currentRoomBadge.textContent = roomId;
+            addRoomToHistory(roomId);
+            updateRoomFavButtonState();
+
             lobbyView.classList.add('hidden');
             editorView.classList.remove('hidden');
 
+            setTimeout(resizeCanvas, 50);
+
             const roomRef = doc(db, 'rooms', roomId);
             
-            // Text Live-Sync
             textUnsubscribe = onSnapshot(roomRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -320,31 +619,302 @@
                         mainEditor.value = data.content || '';
                     }
                     localChange = false;
+
+                    if (!localDrawing && data.drawing) {
+                        const img = new Image();
+                        img.onload = () => {
+                            ctx.clearRect(0, 0, canvas.width, canvas.height);
+                            ctx.drawImage(img, 0, 0);
+                        };
+                        img.src = data.drawing;
+                    }
+                    localDrawing = false;
                 }
             });
 
-            // Anwesenheit (Presence) Tracking
             const userPresenceRef = doc(db, 'rooms', roomId, 'presence', currentUser.id);
-            await setDoc(userPresenceRef, {
-                name: currentUser.name,
-                lastSeen: serverTimestamp()
-            });
+            async function updatePresence() {
+                try {
+                    await setDoc(userPresenceRef, {
+                        id: currentUser.id,
+                        name: currentUser.name,
+                        lastSeen: serverTimestamp()
+                    });
+                } catch(e) {}
+            }
+
+            await updatePresence();
+            presenceInterval = setInterval(updatePresence, 10000);
 
             const presenceCol = collection(db, 'rooms', roomId, 'presence');
             presenceUnsubscribe = onSnapshot(presenceCol, (snapshot) => {
                 let users = [];
-                snapshot.forEach(doc => users.push(doc.data()));
-                activeUsersCount.textContent = users.length;
-                activeUsersList.innerHTML = users.map(u => `
-                    <div class="flex items-center space-x-2.5 p-2 bg-white rounded-xl border border-slate-200 shadow-xs">
-                        <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                        <span class="text-xs font-medium text-slate-700 truncate">${escapeHtml(u.name)}</span>
+                const now = Date.now();
+                
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const userId = docSnap.id;
+                    let isUserActive = true;
+                    
+                    if (data.lastSeen) {
+                        const lastSeenTime = data.lastSeen.toMillis ? data.lastSeen.toMillis() : now;
+                        if (now - lastSeenTime >= 25000) {
+                            isUserActive = false;
+                        }
+                    }
+
+                    if (isUserActive) {
+                        users.push({
+                            id: userId,
+                            name: data.name || 'Gast'
+                        });
+                    }
+                });
+
+                users.sort((a, b) => a.id.localeCompare(b.id));
+
+                const nameCounts = {};
+                userDisplayNames = {};
+                const formattedUsers = users.map(u => {
+                    const baseName = u.name;
+                    let displayName = baseName;
+                    if (!nameCounts[baseName]) {
+                        nameCounts[baseName] = 1;
+                    } else {
+                        nameCounts[baseName]++;
+                        displayName = `${baseName} (${nameCounts[baseName]})`;
+                    }
+                    userDisplayNames[u.id] = displayName;
+                    return { ...u, displayName };
+                });
+
+                activeUsersCount.textContent = formattedUsers.length;
+                activeUsersList.innerHTML = formattedUsers.map(u => `
+                    <div class="flex items-center space-x-2 p-1.5 bg-white rounded-lg border border-slate-200 shadow-xs">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
+                        <span class="text-xs font-medium text-slate-700 truncate">${escapeHtml(u.displayName)}</span>
                     </div>
                 `).join('');
             });
+
+            setupVoiceChatSignaling();
+            setupSMSChat();
         }
 
-        // Textänderungen in Firestore speichern
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessagesList = document.getElementById('chat-messages-list');
+
+        function setupSMSChat() {
+            if (!currentRoomId) return;
+            const chatCol = collection(db, 'rooms', currentRoomId, 'chat');
+
+            chatUnsubscribe = onSnapshot(chatCol, (snapshot) => {
+                let msgs = [];
+                snapshot.forEach(docSnap => {
+                    msgs.push({ id: docSnap.id, ...docSnap.data() });
+                });
+
+                msgs.sort((a, b) => {
+                    const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : Date.now();
+                    const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : Date.now();
+                    return ta - tb;
+                });
+
+                renderChatMessages(msgs);
+            });
+        }
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text || !currentRoomId || !isOnline) return;
+
+            chatInput.value = '';
+            const myDisplayName = userDisplayNames[currentUser.id] || currentUser.name;
+
+            try {
+                await addDoc(collection(db, 'rooms', currentRoomId, 'chat'), {
+                    senderId: currentUser.id,
+                    senderName: myDisplayName,
+                    text: text,
+                    createdAt: serverTimestamp()
+                });
+            } catch(e) {}
+        });
+
+        function renderChatMessages(msgs) {
+            chatMessagesList.innerHTML = msgs.map(m => {
+                const isMe = m.senderId === currentUser.id;
+                const displayName = userDisplayNames[m.senderId] || m.senderName || 'Gast';
+                return `
+                    <div data-msg-id="${m.id}" class="chat-msg flex flex-col ${isMe ? 'items-end' : 'items-start'} max-w-full">
+                        <span class="text-[9px] text-slate-400 px-1 mb-0.5">${escapeHtml(displayName)}</span>
+                        <div class="px-2.5 py-1.5 rounded-xl text-xs max-w-[85%] break-words shadow-xs ${isMe ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-slate-200 text-slate-800 rounded-bl-none'}">
+                            ${escapeHtml(m.text || '')}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            pruneOffscreenChat();
+        }
+
+        async function pruneOffscreenChat() {
+            while (chatMessagesList.scrollHeight > chatMessagesList.clientHeight && chatMessagesList.children.length > 0) {
+                const oldestChild = chatMessagesList.firstChild;
+                const msgId = oldestChild.getAttribute('data-msg-id');
+                chatMessagesList.removeChild(oldestChild);
+
+                if (msgId && currentRoomId && isOnline) {
+                    try {
+                        await deleteDoc(doc(db, 'rooms', currentRoomId, 'chat', msgId));
+                    } catch(e) {}
+                }
+            }
+        }
+
+        let localVoiceStream = null;
+        let isVoiceActive = false;
+        const peerConnections = {};
+        const rtcConfig = {
+            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+        };
+
+        const voiceChatBtn = document.getElementById('voice-chat-btn');
+        const voiceIcon = document.getElementById('voice-icon');
+        const voiceText = document.getElementById('voice-text');
+        const audioContainer = document.getElementById('audio-container');
+
+        voiceChatBtn.addEventListener('click', async () => {
+            if (!isVoiceActive) {
+                try {
+                    localVoiceStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    isVoiceActive = true;
+                    voiceChatBtn.className = "px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-emerald-200";
+                    voiceIcon.className = "fa-solid fa-microphone text-emerald-600 animate-pulse";
+                    voiceText.textContent = "";
+
+                    broadcastVoiceOffer();
+                } catch (e) {
+                    showError("Zugriff auf Mikrofon verweigert oder nicht unterstützt.");
+                }
+            } else {
+                stopVoiceChat();
+            }
+        });
+
+        function stopVoiceChat() {
+            if (localVoiceStream) {
+                localVoiceStream.getTracks().forEach(track => track.stop());
+                localVoiceStream = null;
+            }
+            isVoiceActive = false;
+            voiceChatBtn.className = "px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300";
+            voiceIcon.className = "fa-solid fa-microphone-slash text-slate-400";
+            voiceText.textContent = "";
+
+            Object.keys(peerConnections).forEach(peerId => {
+                peerConnections[peerId].close();
+                delete peerConnections[peerId];
+            });
+            audioContainer.innerHTML = '';
+        }
+
+        function createPeerConnection(targetUserId) {
+            if (peerConnections[targetUserId]) return peerConnections[targetUserId];
+
+            const pc = new RTCPeerConnection(rtcConfig);
+            peerConnections[targetUserId] = pc;
+
+            if (localVoiceStream) {
+                localVoiceStream.getTracks().forEach(track => pc.addTrack(track, localVoiceStream));
+            }
+
+            pc.ontrack = (event) => {
+                let audioEl = document.getElementById(`audio-${targetUserId}`);
+                if (!audioEl) {
+                    audioEl = document.createElement('audio');
+                    audioEl.id = `audio-${targetUserId}`;
+                    audioEl.autoplay = true;
+                    audioContainer.appendChild(audioEl);
+                }
+                audioEl.srcObject = event.streams[0];
+            };
+
+            pc.onicecandidate = (event) => {
+                if (event.candidate && currentRoomId) {
+                    addDoc(collection(db, 'rooms', currentRoomId, 'signals'), {
+                        sender: currentUser.id,
+                        receiver: targetUserId,
+                        type: 'candidate',
+                        candidate: JSON.stringify(event.candidate)
+                    });
+                }
+            };
+
+            return pc;
+        }
+
+        async function broadcastVoiceOffer() {
+            if (!currentRoomId) return;
+            const signalCol = collection(db, 'rooms', currentRoomId, 'signals');
+            await addDoc(signalCol, {
+                sender: currentUser.id,
+                receiver: 'ALL',
+                type: 'ping'
+            });
+        }
+
+        function setupVoiceChatSignaling() {
+            if (!currentRoomId) return;
+            const signalsCol = collection(db, 'rooms', currentRoomId, 'signals');
+
+            signalUnsubscribe = onSnapshot(signalsCol, (snapshot) => {
+                snapshot.docChanges().forEach(async (change) => {
+                    if (change.type === 'added') {
+                        const data = change.doc.data();
+                        if (data.sender === currentUser.id) return;
+
+                        if (data.receiver === currentUser.id || data.receiver === 'ALL') {
+                            if (data.type === 'ping' && isVoiceActive) {
+                                const pc = createPeerConnection(data.sender);
+                                const offer = await pc.createOffer();
+                                await pc.setLocalDescription(offer);
+                                await addDoc(signalsCol, {
+                                    sender: currentUser.id,
+                                    receiver: data.sender,
+                                    type: 'offer',
+                                    sdp: JSON.stringify(offer)
+                                });
+                            } else if (data.type === 'offer') {
+                                const pc = createPeerConnection(data.sender);
+                                await pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data.sdp)));
+                                const answer = await pc.createAnswer();
+                                await pc.setLocalDescription(answer);
+                                await addDoc(signalsCol, {
+                                    sender: currentUser.id,
+                                    receiver: data.sender,
+                                    type: 'answer',
+                                    sdp: JSON.stringify(answer)
+                                });
+                            } else if (data.type === 'answer') {
+                                const pc = peerConnections[data.sender];
+                                if (pc) {
+                                    await pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data.sdp)));
+                                }
+                            } else if (data.type === 'candidate') {
+                                const pc = peerConnections[data.sender];
+                                if (pc) {
+                                    await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)));
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
         mainEditor.addEventListener('input', async () => {
             if (!currentRoomId || !isOnline) return;
             localChange = true;
@@ -354,38 +924,107 @@
                     content: mainEditor.value,
                     updatedAt: serverTimestamp()
                 });
-            } catch (e) {
-                console.error("Fehler beim Speichern:", e);
+            } catch (e) {}
+        });
+
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+            const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const pos = getMousePos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+            e.preventDefault();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const pos = getMousePos(e);
+            ctx.strokeStyle = brushColor.value;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            e.preventDefault();
+        }
+
+        async function stopDrawing() {
+            if (!isDrawing) return;
+            isDrawing = false;
+            localDrawing = true;
+
+            if (currentRoomId && isOnline) {
+                const roomRef = doc(db, 'rooms', currentRoomId);
+                try {
+                    await updateDoc(roomRef, {
+                        drawing: canvas.toDataURL(),
+                        updatedAt: serverTimestamp()
+                    });
+                } catch(e) {}
+            }
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', draw);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        clearCanvasBtn.addEventListener('click', async () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            localDrawing = true;
+            if (currentRoomId && isOnline) {
+                const roomRef = doc(db, 'rooms', currentRoomId);
+                await updateDoc(roomRef, { drawing: '' });
             }
         });
 
-        // Raum verlassen
-        leaveRoomBtn.addEventListener('click', async () => {
+        async function leaveCurrentRoom() {
+            stopVoiceChat();
+            if (presenceInterval) clearInterval(presenceInterval);
             if (textUnsubscribe) textUnsubscribe();
             if (presenceUnsubscribe) presenceUnsubscribe();
+            if (signalUnsubscribe) signalUnsubscribe();
+            if (chatUnsubscribe) chatUnsubscribe();
 
             if (currentRoomId && isOnline) {
                 try {
                     const userPresenceRef = doc(db, 'rooms', currentRoomId, 'presence', currentUser.id);
-                    await setDoc(userPresenceRef, { active: false });
+                    await deleteDoc(userPresenceRef);
                 } catch(e) {}
             }
 
             currentRoomId = null;
             mainEditor.value = '';
+            chatMessagesList.innerHTML = '';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             editorView.classList.add('hidden');
             lobbyView.classList.remove('hidden');
             roomIdInput.value = '';
-        });
+            renderRecentRoomsUI();
+        }
 
-        clearTextBtn.addEventListener('click', async () => {
-            if (confirm("Möchtest du den gesamten Text löschen?")) {
+        leaveRoomBtn.addEventListener('click', leaveCurrentRoom);
+
+        clearTextBtn.addEventListener('click', () => {
+            showConfirmModal("Text leeren", "Möchtest du wirklich den gesamten Text im Editor löschen?", async () => {
                 mainEditor.value = '';
                 if (currentRoomId && isOnline) {
                     const roomRef = doc(db, 'rooms', currentRoomId);
                     await updateDoc(roomRef, { content: '' });
                 }
-            }
+            });
         });
 
         exportTxtBtn.addEventListener('click', () => {
@@ -407,6 +1046,8 @@
         function escapeHtml(text) {
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
+
+        renderRecentRoomsUI();
     </script>
 </body>
 </html>
