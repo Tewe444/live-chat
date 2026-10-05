@@ -43,7 +43,7 @@
 
             <div class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Dein Name / Gerät</label>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Dein Name / Gerät (optional)</label>
                     <input type="text" id="usernameInput" placeholder="z. B. Laptop, Handy..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition text-sm">
                 </div>
 
@@ -70,7 +70,6 @@
             </div>
         </div>
 
-        <!-- Collaborative Editor View -->
         <div id="editorView" class="hidden flex-1 flex flex-col space-y-4">
             
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -111,7 +110,6 @@
 
     </main>
 
-    <!-- Notification Toast -->
     <div id="toast" class="fixed bottom-6 right-6 transform translate-y-24 opacity-0 transition-all duration-300 bg-slate-800 text-white px-4 py-3 rounded-xl border border-slate-700 shadow-2xl flex items-center space-x-3 text-sm z-50">
         <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
         <span id="toastMessage">Aktion erfolgreich</span>
@@ -173,7 +171,10 @@
         });
 
         window.createRoom = async () => {
-            const username = document.getElementById('usernameInput').value.trim() || 'Gast-' + Math.floor(Math.random() * 1000);
+            let username = document.getElementById('usernameInput').value.trim();
+            if (!username) {
+                username = 'Gerät-' + Math.floor(1000 + Math.random() * 9000);
+            }
             let roomId = document.getElementById('customRoomCodeInput').value.trim().toUpperCase();
             
             if (!roomId) {
@@ -197,7 +198,10 @@
         };
 
         window.joinRoom = async () => {
-            const username = document.getElementById('usernameInput').value.trim() || 'Gast-' + Math.floor(Math.random() * 1000);
+            let username = document.getElementById('usernameInput').value.trim();
+            if (!username) {
+                username = 'Gerät-' + Math.floor(1000 + Math.random() * 9000);
+            }
             const roomId = document.getElementById('roomCodeInput').value.trim().toUpperCase();
 
             if (!roomId) {
@@ -341,8 +345,11 @@
                 } catch (e) {}
             }
 
-            if (unsubscribeDoc) unsubscribeDoc();
-            currentRoomId = now = null;
+            if (unsubscribeDoc) {
+                unsubscribeDoc();
+                unsubscribeDoc = null;
+            }
+            currentRoomId = null;
             
             try {
                 const cleanUrl = window.location.pathname;
