@@ -181,16 +181,18 @@
                 roomId = Math.random().toString(36).substring(2, 8).toUpperCase();
             }
 
-            try {
-                const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
-                const docSnap = await getDoc(roomRef);
+            if (db) {
+                try {
+                    const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
+                    const docSnap = await getDoc(roomRef);
 
-                if (docSnap.exists()) {
-                    showToast("Raum gibt es schon", "error");
-                    return;
+                    if (docSnap.exists()) {
+                        showToast("Raum gibt es schon", "error");
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Fehler beim Prüfen:", e);
                 }
-            } catch (e) {
-                console.error("Fehler beim Prüfen:", e);
             }
 
             localStorage.setItem('live_text_username', username);
@@ -209,18 +211,20 @@
                 return;
             }
 
-            try {
-                const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
-                const docSnap = await getDoc(roomRef);
+            if (db) {
+                try {
+                    const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
+                    const docSnap = await getDoc(roomRef);
 
-                if (!docSnap.exists()) {
+                    if (!docSnap.exists()) {
+                        showToast("Raum gibt es nicht", "error");
+                        return;
+                    }
+                } catch (e) {
+                    console.error("Fehler beim Prüfen:", e);
                     showToast("Raum gibt es nicht", "error");
                     return;
                 }
-            } catch (e) {
-                console.error("Fehler beim Prüfen:", e);
-                showToast("Raum gibt es nicht", "error");
-                return;
             }
 
             localStorage.setItem('live_text_username', username);
@@ -239,54 +243,56 @@
             document.getElementById('editorView').classList.remove('hidden');
             document.getElementById('currentRoomIdDisplay').innerText = roomId;
 
-            const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
-            const userId = currentUser?.uid || 'anon_' + Math.random();
-            
-            try {
-                const docSnap = await getDoc(roomRef);
-                if (!docSnap.exists() || isNew) {
-                    await setDoc(roomRef, {
-                        content: "Willkommen im Live-Raum!\n\nAlles wird dauerhaft gespeichert.",
-                        updatedAt: Date.now(),
-                        users: { [userId]: { name: username, lastActive: Date.now() } }
-                    });
-                } else {
-                    const data = docSnap.data();
-                    const users = data.users || {};
-                    users[userId] = { name: username, lastActive: Date.now() };
-                    await updateDoc(roomRef, { users, updatedAt: Date.now() });
-                }
-            } catch (e) {
-                console.error("Error setting up room:", e);
-            }
-
-            unsubscribeDoc = onSnapshot(roomRef, (docSnap) => {
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    const textarea = document.getElementById('liveTextarea');
-                    
-                    if (data.content !== undefined && data.content !== textarea.value) {
-                        isRemoteUpdate = true;
-                        const cursorStart = textarea.selectionStart;
-                        const cursorEnd = textarea.selectionEnd;
-                        
-                        textarea.value = data.content;
-                        updateStats(data.content);
-
-                        try {
-                            textarea.setSelectionRange(cursorStart, cursorEnd);
-                        } catch(err) {}
-                        isRemoteUpdate = false;
+            if (db) {
+                const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', roomId);
+                const userId = currentUser?.uid || 'anon_' + Math.random();
+                
+                try {
+                    const docSnap = await getDoc(roomRef);
+                    if (!docSnap.exists() || isNew) {
+                        await setDoc(roomRef, {
+                            content: "Willkommen im Live-Raum!\n\nAlles wird dauerhaft gespeichert.",
+                            updatedAt: Date.now(),
+                            users: { [userId]: { name: username, lastActive: Date.now() } }
+                        });
+                    } else {
+                        const data = docSnap.data();
+                        const users = data.users || {};
+                        users[userId] = { name: username, lastActive: Date.now() };
+                        await updateDoc(roomRef, { users, updatedAt: Date.now() });
                     }
-
-                    renderActiveUsers(data.users || {});
+                } catch (e) {
+                    console.error("Error setting up room:", e);
                 }
-            });
+
+                unsubscribeDoc = onSnapshot(roomRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        const textarea = document.getElementById('liveTextarea');
+                        
+                        if (data.content !== undefined && data.content !== textarea.value) {
+                            isRemoteUpdate = true;
+                            const cursorStart = textarea.selectionStart;
+                            const cursorEnd = textarea.selectionEnd;
+                            
+                            textarea.value = data.content;
+                            updateStats(data.content);
+
+                            try {
+                                textarea.setSelectionRange(cursorStart, cursorEnd);
+                            } catch(err) {}
+                            isRemoteUpdate = false;
+                        }
+
+                        renderActiveUsers(data.users || {});
+                    }
+                });
+            }
         }
 
         const textarea = document.getElementById('liveTextarea');
         textarea.addEventListener('input', (e) => {
-            if (isRemoteUpdate || !currentRoomId) return;
+            if (isRemoteUpdate || !currentRoomId || !db) return;
 
             const content = e.target.value;
             updateStats(content);
@@ -335,7 +341,7 @@
         };
 
         window.leaveRoom = async () => {
-            if (currentRoomId && currentUser) {
+            if (currentRoomId && currentUser && db) {
                 try {
                     const roomRef = doc(db, 'artifacts', appId, 'public', 'rooms', currentRoomId);
                     await updateDoc(roomRef, {
