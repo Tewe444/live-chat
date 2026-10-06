@@ -63,7 +63,7 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-user-pen"></i>
                             </span>
-                            <input type="text" id="username-input" placeholder="Name eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" />
+                            <input type="text" id="username-input" placeholder="Name eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
                     </div>
 
@@ -89,14 +89,14 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-key"></i>
                             </span>
-                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" />
+                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
                         <div class="flex space-x-2">
                             <button id="join-room-btn" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2">
                                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                 <span>Raum betreten</span>
                             </button>
-                            <button id="toggle-recent-modal-btn" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 px-3.5 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center space-x-1.5">
+                            <button id="toggle-recent-modal-btn" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 px-3.5 py-2.5 rounded-xl font-medium text-sm flex items-center space-x-1.5 transition-all" title="Letzte Räume & Favoriten">
                                 <i class="fa-solid fa-star text-amber-500"></i>
                                 <span class="hidden sm:inline">Räume</span>
                             </button>
@@ -127,7 +127,7 @@
                 <!-- Editor Header / Toolbar -->
                 <div class="bg-white border-b border-slate-200 px-4 py-3 flex flex-wrap items-center justify-between gap-3 shrink-0">
                     <div class="flex items-center space-x-3">
-                        <button id="leave-room-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-200">
+                        <button id="leave-room-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300">
                             <i class="fa-solid fa-arrow-left"></i>
                             <span>Verlassen</span>
                         </button>
@@ -147,8 +147,7 @@
                     <div class="flex items-center space-x-2">
                         <!-- Voice Chat Button -->
                         <button id="voice-chat-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300">
-                            <i id="voice-icon" class="fa-solid fa-microphone-slash text-slate-400"></i>
-                            <span id="voice-text"></span>
+                            <span id="voice-text">Voice Chat aus</span>
                         </button>
 
                         <button id="clear-text-btn" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1 border border-rose-200">
@@ -161,16 +160,15 @@
                             <span>Speichern</span>
                         </button>
 
-                        <!-- Öffnen-Button direkt rechts von Speichern (Nur "<" als Text) -->
-                        <button id="open-canvas-btn" class="hidden px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold rounded-lg transition-all items-center justify-center w-8 h-8">
-                            <span>&lt;</span>
+                        <button id="open-canvas-btn" class="hidden px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-all items-center justify-center border border-slate-300 shadow-xs" title="Zeichenfläche öffnen">
+                            &lt;
                         </button>
                     </div>
                 </div>
 
                 <!-- Textarea -->
                 <div class="flex-1 p-4 bg-slate-50/50 flex flex-col overflow-hidden">
-                    <textarea id="main-editor" placeholder="Sicherheits-Info: Diese Chats sind öffentlich, nicht privat. Wenn also jemand weiß, was er tun muss, kann er alles in diesen Chats herausfinden. Wenn du private Sachen besprechen willst, nimm bitte einen privaten Chat oder ein separates Tool." class="w-full h-full resize-none border-0 bg-transparent text-sm text-slate-700 leading-relaxed focus:outline-none"></textarea>
+                    <textarea id="main-editor" placeholder="Sicherheits-Info: Diese Chats sind öffentlich, nicht privat. Wenn also jemand weiß, was er tun muss, kann er alles in diesen Chats herausfinden." class="flex-1 w-full p-4 bg-white border border-slate-200 rounded-xl shadow-inner resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent custom-scrollbar"></textarea>
                 </div>
             </div>
 
@@ -178,8 +176,9 @@
             <div id="canvas-container" class="w-full md:w-80 bg-white border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-64 md:h-full transition-all">
                 <div class="p-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
                     <div class="flex items-center space-x-2">
-                        <button id="close-canvas-btn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all" title="Malfläche einklappen">&lt;</button>
+                        <button id="close-canvas-btn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all" title="Malfläche einklappen">&gt;</button>
                         <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-paintbrush text-indigo-500"></i>
                             <span>Zeichenfläche</span>
                         </h3>
                     </div>
@@ -197,27 +196,38 @@
             </div>
 
             <!-- Äußerste rechte Spalte: Aktive Nutzer & Chat -->
-            <div class="w-full md:w-72 bg-slate-50 border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-80 md:h-full overflow-hidden">
-                <!-- Anwesend Bereich -->
+            <div id="chat-sidebar-container" class="w-full md:w-72 bg-slate-50 border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-80 md:h-full overflow-hidden transition-all duration-300">
+                <!-- Anwesend Bereich Header -->
                 <div class="p-3 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
-                    <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider">
-                        <span>Anwesend</span>
-                    </h3>
-                    <span id="active-users-count" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                    <div class="flex items-center space-x-2">
+                        <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-users text-indigo-500"></i>
+                            <span class="sidebar-title-text">Anwesend</span>
+                        </h3>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span id="active-users-count" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+                        <button id="toggle-users-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center space-x-1" title="Anwesenden-Liste einklappen">
+                            <i id="toggle-users-icon" class="fa-solid fa-chevron-down"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="max-h-36 overflow-y-auto p-2 space-y-1.5 custom-scrollbar border-b border-slate-200 shrink-0 bg-slate-50/50" id="active-users-list">
+                <!-- Anwesenden Liste -->
+                <div id="active-users-list" class="max-h-36 overflow-y-auto p-2 space-y-1.5 custom-scrollbar border-b border-slate-200 shrink-0 bg-slate-50/50">
                     <!-- Wird dynamisch gefüllt -->
                 </div>
 
                 <!-- Chat Bereich (SMS Style) -->
-                <div class="flex-1 flex flex-col min-h-0 bg-white">
+                <div id="chat-content-box" class="flex-1 flex flex-col min-h-0 bg-white">
                     <div class="p-2 border-b border-slate-100 bg-slate-50 flex items-center justify-between shrink-0">
                         <h3 class="font-semibold text-[11px] text-slate-500 uppercase tracking-wider flex items-center space-x-1.5">
                             <i class="fa-solid fa-comments text-indigo-500"></i>
                             <span>Chat</span>
                         </h3>
-                        <span class="text-[10px] text-slate-400"></span>
+                        <button id="close-chat-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center space-x-1" title="Chat einklappen">
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </button>
                     </div>
 
                     <!-- Nachrichten Liste -->
@@ -227,14 +237,21 @@
 
                     <!-- Chat Eingabe -->
                     <form id="chat-form" class="p-2 border-t border-slate-200 flex space-x-1.5 bg-white shrink-0">
-                        <input type="text" id="chat-input" placeholder="Nachricht Schreiben..." autocomplete="off" class="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                        <input type="text" id="chat-input" placeholder="Nachricht Schreiben..." autocomplete="off" class="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
                         <button type="submit" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-medium transition-colors">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </form>
                 </div>
 
-                <div class="p-2 bg-slate-100 border-t border-slate-200 text-center text-[10px] text-slate-400 shrink-0">
+                <!-- Container unten zum Wiederanzeigen des Chats -->
+                <div id="open-chat-container" class="hidden p-2 bg-slate-50 border-t border-slate-200 flex justify-end items-center shrink-0">
+                    <button id="open-chat-btn-bottom" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center space-x-1" title="Chat öffnen">
+                        <i class="fa-solid fa-chevron-up"></i>
+                    </button>
+                </div>
+
+                <div id="sidebar-footer-text" class="p-2 bg-slate-100 border-t border-slate-200 text-center text-[10px] text-slate-400 shrink-0">
                     Maximal 10 Personen
                 </div>
             </div>
@@ -254,7 +271,32 @@
         </div>
     </div>
 
-    <!-- Audios Container für t -->
+    <!-- Benutzereinstellungen Modal Dialog -->
+    <div id="user-settings-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-xl border border-slate-100">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 id="settings-user-name" class="text-sm font-bold text-slate-800 truncate">Benutzereinstellungen</h3>
+                <button id="close-settings-modal-btn" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg transition-colors">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+            
+            <div class="space-y-3">
+                <div class="flex justify-between items-center">
+                    <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Lautstärke</label>
+                    <span id="settings-volume-text" class="text-xs font-mono font-bold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">100%</span>
+                </div>
+                <input type="range" id="settings-volume-slider" min="0" max="200" value="100" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                <div class="flex justify-between text-[10px] text-slate-400 font-medium px-0.5">
+                    <span>Mute</span>
+                    <span>100%</span>
+                    <span>200%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audios Container für Voicechat -->
     <div id="audio-container" class="hidden"></div>
 
     <!-- Firebase SDKs via CDN -->
@@ -305,6 +347,8 @@
             name: 'Gast-' + Math.floor(Math.random() * 9000 + 1000)
         };
         let userDisplayNames = {};
+        let userSpeakingStatus = {};
+        let userVolumes = {}; // Speichert die individuelle Lautstärke pro User (0 = Stumm)
 
         const usernameInput = document.getElementById('username-input');
 
@@ -468,28 +512,114 @@
 
         // Malen Elements & Toggle
         const canvasContainer = document.getElementById('canvas-container');
-        const openCanvasBtn = document.getElementById('open-canvas-btn');
         const closeCanvasBtn = document.getElementById('close-canvas-btn');
+        const openCanvasBtn = document.getElementById('open-canvas-btn');
         const canvas = document.getElementById('paint-canvas');
+
+        function toggleCanvasVisibility(show) {
+            if (show) {
+                canvasContainer.classList.remove('hidden');
+                if (openCanvasBtn) openCanvasBtn.classList.add('hidden');
+                setTimeout(resizeCanvas, 50);
+            } else {
+                canvasContainer.classList.add('hidden');
+                if (openCanvasBtn) openCanvasBtn.classList.remove('hidden');
+            }
+        }
+
+        closeCanvasBtn.addEventListener('click', () => {
+            toggleCanvasVisibility(false);
+        });
+
+        if (openCanvasBtn) {
+            openCanvasBtn.addEventListener('click', () => {
+                toggleCanvasVisibility(true);
+            });
+        }
+
+        // Chat Elements & Toggle
+        const chatSidebarContainer = document.getElementById('chat-sidebar-container');
+        const chatContentBox = document.getElementById('chat-content-box');
+        const openChatBtnBottom = document.getElementById('open-chat-btn-bottom');
+        const openChatContainer = document.getElementById('open-chat-container');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+
+        // Anwesenden-Liste Toggle
+        const toggleUsersBtn = document.getElementById('toggle-users-btn');
+        const toggleUsersIcon = document.getElementById('toggle-users-icon');
+
+        // Hilfsfunktion zur Prüfung, ob BEIDE (Chat und Anwesend-Liste) eingeklappt sind
+        function updateSidebarWidthState() {
+            const isChatHidden = chatContentBox.classList.contains('hidden');
+            const isUsersHidden = activeUsersList.classList.contains('hidden');
+
+            if (isChatHidden && isUsersHidden) {
+                // Sehr schmal machen wenn beides zu ist
+                chatSidebarContainer.classList.remove('md:w-72');
+                chatSidebarContainer.classList.add('md:w-12');
+                // Texte und Indikatoren optional ausblenden im Schmalmodus
+                document.querySelector('.sidebar-title-text').classList.add('hidden');
+                activeUsersCount.classList.add('hidden');
+                document.getElementById('sidebar-footer-text').classList.add('hidden');
+            } else {
+                // Wieder normale Breite
+                chatSidebarContainer.classList.remove('md:w-12');
+                chatSidebarContainer.classList.add('md:w-72');
+                document.querySelector('.sidebar-title-text').classList.remove('hidden');
+                activeUsersCount.classList.remove('hidden');
+                document.getElementById('sidebar-footer-text').classList.remove('hidden');
+            }
+        }
+
+        if (toggleUsersBtn && toggleUsersIcon) {
+            toggleUsersBtn.addEventListener('click', () => {
+                const isHidden = activeUsersList.classList.toggle('hidden');
+                if (isHidden) {
+                    toggleUsersIcon.className = "fa-solid fa-chevron-up";
+                    toggleUsersBtn.title = "Anwesenden-Liste ausklappen";
+                } else {
+                    toggleUsersIcon.className = "fa-solid fa-chevron-down";
+                    toggleUsersBtn.title = "Anwesenden-Liste einklappen";
+                }
+                updateSidebarWidthState();
+            });
+        }
+
+        // Chat ausblenden
+        closeChatBtn.addEventListener('click', () => {
+            chatContentBox.classList.add('hidden');
+            if (openChatContainer) {
+                openChatContainer.classList.remove('hidden');
+            }
+            if (openChatBtnBottom) {
+                openChatBtnBottom.classList.remove('hidden');
+            }
+            activeUsersList.classList.remove('max-h-36', 'shrink-0', 'border-b');
+            activeUsersList.classList.add('flex-1', 'min-h-0');
+            updateSidebarWidthState();
+        });
+
+        // Chat einblenden
+        const handleOpenChat = () => {
+            chatContentBox.classList.remove('hidden');
+            if (openChatContainer) {
+                openChatContainer.classList.add('hidden');
+            }
+            if (openChatBtnBottom) {
+                openChatBtnBottom.classList.add('hidden');
+            }
+            activeUsersList.classList.add('max-h-36', 'shrink-0', 'border-b');
+            activeUsersList.classList.remove('flex-1', 'min-h-0');
+            updateSidebarWidthState();
+        };
+
+        if (openChatBtnBottom) openChatBtnBottom.addEventListener('click', handleOpenChat);
+
         const ctx = canvas.getContext('2d');
         const brushColor = document.getElementById('brush-color');
         const clearCanvasBtn = document.getElementById('clear-canvas-btn');
         let isDrawing = false;
         let localDrawing = false;
-
-        // Malfläche ausklappen / einklappen Toggle Logic
-        closeCanvasBtn.addEventListener('click', () => {
-            canvasContainer.classList.add('hidden');
-            openCanvasBtn.classList.remove('hidden');
-            openCanvasBtn.classList.add('flex');
-        });
-
-        openCanvasBtn.addEventListener('click', () => {
-            canvasContainer.classList.remove('hidden');
-            openCanvasBtn.classList.add('hidden');
-            openCanvasBtn.classList.remove('flex');
-            setTimeout(resizeCanvas, 50);
-        });
 
         function resizeCanvas() {
             if (canvasContainer.classList.contains('hidden')) return;
@@ -630,17 +760,6 @@
                 }
             });
 
-            const userPresenceRef = doc(db, 'rooms', roomId, 'presence', currentUser.id);
-            async function updatePresence() {
-                try {
-                    await setDoc(userPresenceRef, {
-                        id: currentUser.id,
-                        name: currentUser.name,
-                        lastSeen: serverTimestamp()
-                    });
-                } catch(e) {}
-            }
-
             await updatePresence();
             presenceInterval = setInterval(updatePresence, 10000);
 
@@ -664,7 +783,9 @@
                     if (isUserActive) {
                         users.push({
                             id: userId,
-                            name: data.name || 'Gast'
+                            name: data.name || 'Gast',
+                            isMuted: data.isMuted !== undefined ? data.isMuted : true,
+                            isSpeaking: data.isSpeaking || false
                         });
                     }
                 });
@@ -687,16 +808,120 @@
                 });
 
                 activeUsersCount.textContent = formattedUsers.length;
-                activeUsersList.innerHTML = formattedUsers.map(u => `
-                    <div class="flex items-center space-x-2 p-1.5 bg-white rounded-lg border border-slate-200 shadow-xs">
-                        <div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
-                        <span class="text-xs font-medium text-slate-700 truncate">${escapeHtml(u.displayName)}</span>
-                    </div>
-                `).join('');
+
+                activeUsersList.innerHTML = formattedUsers.map(u => {
+                    const isSelf = u.id === currentUser.id;
+                    const isSpeaking = isSelf ? (userSpeakingStatus[u.id] || false) : u.isSpeaking;
+                    const isMutedByVol = userVolumes[u.id] === 0;
+
+                    let voiceStatusIcon = '';
+                    if (u.isMuted) {
+                        voiceStatusIcon = `<i class="fa-solid fa-volume-xmark text-slate-400 text-xs select-none" title="Voice Chat aus"></i>`;
+                    } else if (isMutedByVol) {
+                        voiceStatusIcon = `<span class="text-xs text-slate-400 select-none" title="Stummgeschaltet">🔇</span>`;
+                    } else if (isSpeaking) {
+                        voiceStatusIcon = `<span class="text-xs text-slate-400 select-none animate-pulse" title="Spricht">🔊</span>`;
+                    } else {
+                        voiceStatusIcon = `<span class="text-xs text-slate-400 select-none" title="Aktiv">🔉</span>`;
+                    }
+
+                    const settingsButton = !isSelf ? `
+                        <button onclick="window.openUserSettingsModal('${u.id}')" class="text-slate-400 hover:text-indigo-600 px-1 text-xs transition-colors" title="Einstellungen / Lautstärke">
+                            <i class="fa-solid fa-sliders"></i>
+                        </button>
+                    ` : '';
+
+                    return `
+                        <div class="flex flex-col p-1.5 bg-white rounded-lg border border-slate-200 shadow-xs">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-1.5 truncate pr-2">
+                                    <div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
+                                    <span class="text-xs font-medium text-slate-700 truncate">${escapeHtml(u.displayName)}</span>
+                                </div>
+                                <div class="flex items-center space-x-1 shrink-0">
+                                    ${settingsButton}
+                                    ${voiceStatusIcon}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             });
 
             setupVoiceChatSignaling();
             setupSMSChat();
+        }
+
+        let activeSettingsUserId = null;
+        let userGainNodes = {};
+        let userAudioCtxs = {};
+
+        window.openUserSettingsModal = (userId) => {
+            activeSettingsUserId = userId;
+            const displayName = userDisplayNames[userId] || 'Benutzer';
+            document.getElementById('settings-user-name').textContent = `Einstellungen: ${displayName}`;
+            
+            const currentVol = userVolumes[userId] !== undefined ? userVolumes[userId] : 100;
+            const slider = document.getElementById('settings-volume-slider');
+            const volText = document.getElementById('settings-volume-text');
+            
+            slider.value = currentVol;
+            volText.textContent = currentVol === 0 ? 'Mute' : `${currentVol}%`;
+            
+            document.getElementById('user-settings-modal').classList.remove('hidden');
+        };
+
+        const settingsSlider = document.getElementById('settings-volume-slider');
+        if (settingsSlider) {
+            settingsSlider.addEventListener('input', (e) => {
+                if (!activeSettingsUserId) return;
+                const vol = parseInt(e.target.value, 10);
+                window.setUserVolume(activeSettingsUserId, vol);
+            });
+        }
+
+        const closeSettingsModal = () => {
+            document.getElementById('user-settings-modal').classList.add('hidden');
+            activeSettingsUserId = null;
+        };
+
+        document.getElementById('close-settings-modal-btn')?.addEventListener('click', closeSettingsModal);
+
+        window.setUserVolume = (userId, value) => {
+            const vol = parseInt(value, 10);
+            userVolumes[userId] = vol;
+
+            if (userGainNodes[userId]) {
+                userGainNodes[userId].gain.value = vol / 100;
+                if (userAudioCtxs[userId] && userAudioCtxs[userId].state === 'suspended') {
+                    userAudioCtxs[userId].resume();
+                }
+            }
+
+            const audioEl = document.getElementById(`audio-${userId}`);
+            if (audioEl) {
+                audioEl.volume = Math.min(1, vol / 100);
+                audioEl.muted = (vol === 0);
+            }
+
+            const volTxt = document.getElementById('settings-volume-text');
+            if (volTxt && activeSettingsUserId === userId) {
+                volTxt.textContent = vol === 0 ? 'Mute' : `${vol}%`;
+            }
+        };
+
+        async function updatePresence() {
+            if (!currentRoomId) return;
+            try {
+                const userPresenceRef = doc(db, 'rooms', currentRoomId, 'presence', currentUser.id);
+                await setDoc(userPresenceRef, {
+                    id: currentUser.id,
+                    name: currentUser.name,
+                    isMuted: !isVoiceActive,
+                    isSpeaking: !!userSpeakingStatus[currentUser.id],
+                    lastSeen: serverTimestamp()
+                }, { merge: true });
+            } catch(e) {}
         }
 
         const chatForm = document.getElementById('chat-form');
@@ -766,7 +991,7 @@
 
                 if (msgId && currentRoomId && isOnline) {
                     try {
-                        await deleteDoc(doc(db, 'rooms', currentRoomId, 'chat', msgId));
+                        await deleteDoc(doc(doc(db, 'rooms', currentRoomId, 'chat', msgId)));
                     } catch(e) {}
                 }
             }
@@ -774,13 +999,15 @@
 
         let localVoiceStream = null;
         let isVoiceActive = false;
+        let audioContext = null;
+        let analyser = null;
+        let animFrameId = null;
         const peerConnections = {};
         const rtcConfig = {
             iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
         };
 
         const voiceChatBtn = document.getElementById('voice-chat-btn');
-        const voiceIcon = document.getElementById('voice-icon');
         const voiceText = document.getElementById('voice-text');
         const audioContainer = document.getElementById('audio-container');
 
@@ -789,10 +1016,41 @@
                 try {
                     localVoiceStream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     isVoiceActive = true;
+                    
                     voiceChatBtn.className = "px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-emerald-200";
-                    voiceIcon.className = "fa-solid fa-microphone text-emerald-600 animate-pulse";
-                    voiceText.textContent = "";
+                    voiceText.textContent = "Voice Chat an";
 
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const source = audioContext.createMediaStreamSource(localVoiceStream);
+                    analyser = audioContext.createAnalyser();
+                    analyser.fftSize = 256;
+                    source.connect(analyser);
+
+                    const bufferLength = analyser.frequencyBinCount;
+                    const dataArray = new Uint8Array(bufferLength);
+                    const THRESHOLD = 15;
+
+                    function checkVolume() {
+                        if (!isVoiceActive) return;
+                        analyser.getByteFrequencyData(dataArray);
+                        let sum = 0;
+                        for (let i = 0; i < bufferLength; i++) {
+                            sum += dataArray[i];
+                        }
+                        const average = sum / bufferLength;
+
+                        const currentlySpeaking = average > THRESHOLD;
+                        if (userSpeakingStatus[currentUser.id] !== currentlySpeaking) {
+                            userSpeakingStatus[currentUser.id] = currentlySpeaking;
+                            updatePresence();
+                        }
+
+                        animFrameId = requestAnimationFrame(checkVolume);
+                    }
+
+                    checkVolume();
+
+                    await updatePresence();
                     broadcastVoiceOffer();
                 } catch (e) {
                     showError("Zugriff auf Mikrofon verweigert oder nicht unterstützt.");
@@ -803,19 +1061,34 @@
         });
 
         function stopVoiceChat() {
+            if (animFrameId) {
+                cancelAnimationFrame(animFrameId);
+                animFrameId = null;
+            }
+            if (audioContext) {
+                audioContext.close();
+                audioContext = null;
+            }
             if (localVoiceStream) {
                 localVoiceStream.getTracks().forEach(track => track.stop());
                 localVoiceStream = null;
             }
             isVoiceActive = false;
+            userSpeakingStatus[currentUser.id] = false;
             voiceChatBtn.className = "px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300";
-            voiceIcon.className = "fa-solid fa-microphone-slash text-slate-400";
-            voiceText.textContent = "";
+            voiceText.textContent = "Voice Chat aus";
+
+            updatePresence();
 
             Object.keys(peerConnections).forEach(peerId => {
                 peerConnections[peerId].close();
                 delete peerConnections[peerId];
             });
+            Object.keys(userAudioCtxs).forEach(peerId => {
+                try { userAudioCtxs[peerId].close(); } catch(e) {}
+            });
+            userGainNodes = {};
+            userAudioCtxs = {};
             audioContainer.innerHTML = '';
         }
 
@@ -838,6 +1111,30 @@
                     audioContainer.appendChild(audioEl);
                 }
                 audioEl.srcObject = event.streams[0];
+                
+                try {
+                    if (!userAudioCtxs[targetUserId]) {
+                        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                        const ctx = new AudioCtx();
+                        const source = ctx.createMediaStreamSource(event.streams[0]);
+                        const gainNode = ctx.createGain();
+                        
+                        const currentVol = userVolumes[targetUserId] !== undefined ? userVolumes[targetUserId] : 100;
+                        gainNode.gain.value = currentVol / 100;
+                        
+                        source.connect(gainNode);
+                        gainNode.connect(ctx.destination);
+                        
+                        userGainNodes[targetUserId] = gainNode;
+                        userAudioCtxs[targetUserId] = ctx;
+                        
+                        audioEl.muted = true;
+                    }
+                } catch(err) {
+                    console.warn("WebAudio GainNode Fehler:", err);
+                }
+
+                window.setUserVolume(targetUserId, userVolumes[targetUserId] !== undefined ? userVolumes[targetUserId] : 100);
             };
 
             pc.onicecandidate = (event) => {
@@ -998,70 +1295,54 @@
 
             if (currentRoomId && isOnline) {
                 try {
-                    const presenceRef = doc(db, 'rooms', currentRoomId, 'presence', currentUser.id);
-                    await deleteDoc(presenceRef);
-                } catch (e) {}
+                    const userPresenceRef = doc(db, 'rooms', currentRoomId, 'presence', currentUser.id);
+                    await deleteDoc(userPresenceRef);
+                } catch(e) {}
             }
 
             currentRoomId = null;
-            currentRoomBadge.textContent = '---';
             mainEditor.value = '';
-            userBadge.classList.add('hidden');
-            userBadge.classList.remove('flex');
-            lobbyView.classList.remove('hidden');
-            editorView.classList.add('hidden');
-            activeUsersList.innerHTML = '';
-            activeUsersCount.textContent = '0';
             chatMessagesList.innerHTML = '';
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            editorView.classList.add('hidden');
+            lobbyView.classList.remove('hidden');
             roomIdInput.value = '';
+            renderRecentRoomsUI();
         }
 
-        leaveRoomBtn.addEventListener('click', () => {
-            showConfirmModal('Raum verlassen', 'Möchtest du den Raum wirklich verlassen?', leaveCurrentRoom);
-        });
+        leaveRoomBtn.addEventListener('click', leaveCurrentRoom);
 
-        clearTextBtn.addEventListener('click', async () => {
-            if (!currentRoomId || !isOnline) return;
-            mainEditor.value = '';
-            localChange = true;
-            try {
-                await updateDoc(doc(db, 'rooms', currentRoomId), { content: '' });
-            } catch (e) {}
+        clearTextBtn.addEventListener('click', () => {
+            showConfirmModal("Text leeren", "Möchtest du wirklich den gesamten Text im Editor löschen?", async () => {
+                mainEditor.value = '';
+                if (currentRoomId && isOnline) {
+                    const roomRef = doc(db, 'rooms', currentRoomId);
+                    await updateDoc(roomRef, { content: '' });
+                }
+            });
         });
 
         exportTxtBtn.addEventListener('click', () => {
-            if (!currentRoomId) return;
-            const text = mainEditor.value;
-            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const blob = new Blob([mainEditor.value], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `room-${currentRoomId}.txt`;
+            a.download = `notiz-${currentRoomId || 'dokument'}.txt`;
             a.click();
             URL.revokeObjectURL(url);
         });
 
-        copyRoomBtn.addEventListener('click', async () => {
-            if (!currentRoomId) return;
-            try {
-                await navigator.clipboard.writeText(currentRoomId);
-            } catch (e) {
-                const temp = document.createElement('textarea');
-                temp.value = currentRoomId;
-                document.body.appendChild(temp);
-                temp.select();
-                document.body.removeChild(temp);
-            }
+        copyRoomBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(currentRoomId);
+            copyRoomBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
+            setTimeout(() => { copyRoomBtn.innerHTML = '<i class="fa-regular fa-copy"></i>'; }, 1500);
         });
 
-        function escapeHtml(str) {
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/\"/g, '&quot;')
-                .replace(/'/g, '&#039;');
+        function escapeHtml(text) {
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
+
+        renderRecentRoomsUI();
     </script>
 </body>
 </html>
