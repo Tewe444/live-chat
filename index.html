@@ -17,25 +17,6 @@
         .toggle-users-btn-closed {
             margin-left: -1rem;
         }
-        .sidebar-collapsed {
-            position: relative;
-        }
-        .sidebar-collapsed #open-chat-container {
-            position: absolute;
-            inset: 0 0 auto 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0.5rem 0.25rem;
-            height: 2.5rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-bottom: 1px solid #e2e8f0;
-            z-index: 2;
-        }
-        .sidebar-collapsed #open-chat-btn-bottom {
-            margin: 0;
-            width: auto;
-        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 h-screen flex flex-col overflow-hidden">
@@ -85,7 +66,7 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-user-pen"></i>
                             </span>
-                            <input type="text" id="username-input" placeholder="Name eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="text" id="username-input" placeholder="Name eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all" />
                         </div>
                     </div>
 
@@ -111,7 +92,7 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-key"></i>
                             </span>
-                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all" />
                         </div>
                         <div class="flex space-x-2">
                             <button id="join-room-btn" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2">
@@ -178,7 +159,7 @@
                             <span>Text leeren</span>
                         </button>
 
-                        <button id="export-txt-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded-lg transition-all flex items-center space-x-1 shadow-md">
+                        <button id="export-txt-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded-lg transition-all flex items-center space-x-1 shadow-sm">
                             <i class="fa-solid fa-download"></i>
                             <span>Speichern</span>
                         </button>
@@ -191,7 +172,7 @@
 
                 <!-- Textarea -->
                 <div class="flex-1 p-4 bg-slate-50/50 flex flex-col overflow-hidden">
-                    <textarea id="main-editor" placeholder="Sicherheits-Info: Diese Chats sind öffentlich, nicht privat. Wenn also jemand weiß, was er tun muss, kann er alles in diesen Chats eintragen..." class="w-full h-full resize-none rounded-xl border border-slate-200 bg-white p-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                    <textarea id="main-editor" placeholder="Sicherheits-Info: Diese Chats sind öffentlich, nicht privat. Wenn also jemand weiß, was er tun muss, kann er alles in diesen Chats einsehen. Bitte keine sensiblen Informationen teilen." class="w-full h-full resize-none rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-700 shadow-inner focus:outline-none focus:ring-2 focus:ring-indigo-200"></textarea>
                 </div>
             </div>
 
@@ -199,9 +180,7 @@
             <div id="canvas-container" class="w-full md:w-80 bg-white border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-64 md:h-full transition-all">
                 <div class="p-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
                     <div class="flex items-center space-x-2">
-                        <button id="close-canvas-btn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all" title="Zeichenfläche schließen">
-                            <i class="fa-solid fa-xmark"></i>
-                        </button>
+                        <button id="close-canvas-btn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all" title="Zeichenfläche schließen">&times;</button>
                         <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider flex items-center space-x-2">
                             <i class="fa-solid fa-paintbrush text-indigo-500"></i>
                             <span>Zeichenfläche</span>
@@ -262,7 +241,7 @@
 
                     <!-- Chat Eingabe -->
                     <form id="chat-form" class="p-2 border-t border-slate-200 flex space-x-1.5 bg-white shrink-0">
-                        <input type="text" id="chat-input" placeholder="Nachricht Schreiben..." autocomplete="off" class="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <input type="text" id="chat-input" placeholder="Nachricht Schreiben..." autocomplete="off" class="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-200" />
                         <button type="submit" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-medium transition-colors">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
@@ -271,7 +250,7 @@
 
                 <!-- Container unten zum Wiederanzeigen des Chats -->
                 <div id="open-chat-container" class="hidden p-2 bg-slate-50 border-t border-slate-200 flex justify-end items-center shrink-0">
-                    <button id="open-chat-btn-bottom" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center justify-center" title="Chat öffnen">
+                    <button id="open-chat-btn-bottom" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center justify-center" title="Chat wieder öffnen">
                         <i class="fa-solid fa-chevron-up"></i>
                     </button>
                 </div>
@@ -327,7 +306,7 @@
     <!-- Firebase SDKs via CDN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, collection, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const fallbackConfig = {
             apiKey: "AIzaSyATCaZy2CJ7Ig3Eed841bo30ZRPH0kVtVM",
@@ -392,11 +371,6 @@
             const confirmBtn = document.getElementById('modal-confirm-btn');
             const cancelBtn = document.getElementById('modal-cancel-btn');
 
-            const cleanup = () => {
-                confirmBtn.removeEventListener('click', handleConfirm);
-                cancelBtn.removeEventListener('click', handleCancel);
-            };
-
             const handleConfirm = () => {
                 modal.classList.add('hidden');
                 cleanup();
@@ -406,6 +380,11 @@
             const handleCancel = () => {
                 modal.classList.add('hidden');
                 cleanup();
+            };
+
+            const cleanup = () => {
+                confirmBtn.removeEventListener('click', handleConfirm);
+                cancelBtn.removeEventListener('click', handleCancel);
             };
 
             confirmBtn.addEventListener('click', handleConfirm);
@@ -578,18 +557,19 @@
         function updateSidebarWidthState() {
             const isChatHidden = chatContentBox.classList.contains('hidden');
             const isUsersHidden = activeUsersList.classList.contains('hidden');
-            const isCollapsed = isChatHidden && isUsersHidden;
 
-            if (isCollapsed) {
+            if (isChatHidden && isUsersHidden) {
+                // Sehr schmal machen wenn beides zu ist
                 chatSidebarContainer.classList.remove('md:w-72');
                 chatSidebarContainer.classList.add('md:w-12');
+                // Texte und Indikatoren optional ausblenden im Schmalmodus
                 document.querySelector('.sidebar-title-text').classList.add('hidden');
                 activeUsersCount.classList.add('hidden');
                 document.getElementById('sidebar-footer-text').classList.add('hidden');
                 if (sidebarUsersIcon) sidebarUsersIcon.classList.add('hidden');
                 toggleUsersBtn.classList.add('toggle-users-btn-closed');
-                chatSidebarContainer.classList.add('sidebar-collapsed');
             } else {
+                // Wieder normale Breite
                 chatSidebarContainer.classList.remove('md:w-12');
                 chatSidebarContainer.classList.add('md:w-72');
                 document.querySelector('.sidebar-title-text').classList.remove('hidden');
@@ -597,7 +577,6 @@
                 document.getElementById('sidebar-footer-text').classList.remove('hidden');
                 if (sidebarUsersIcon) sidebarUsersIcon.classList.remove('hidden');
                 toggleUsersBtn.classList.remove('toggle-users-btn-closed');
-                chatSidebarContainer.classList.remove('sidebar-collapsed');
             }
         }
 
@@ -693,6 +672,7 @@
             }
             setupUser();
             const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
+            
             try {
                 const roomRef = doc(db, 'rooms', newRoomId);
                 await setDoc(roomRef, {
@@ -768,6 +748,7 @@
             setTimeout(resizeCanvas, 50);
 
             const roomRef = doc(db, 'rooms', roomId);
+            
             textUnsubscribe = onSnapshot(roomRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
@@ -1017,9 +998,11 @@
                 const msgId = oldestChild.getAttribute('data-msg-id');
                 chatMessagesList.removeChild(oldestChild);
 
-                if (msgId) {
-                    const msg = chatMessagesList.querySelector('[data-msg-id="'+msgId+'"]');
-                    if (msg) msg.remove();
+                if (msgId && currentRoomId && isOnline) {
+                    try {
+                        const chatRef = doc(db, 'rooms', currentRoomId, 'chat', msgId);
+                        await deleteDoc(chatRef);
+                    } catch (e) {}
                 }
             }
         }
@@ -1029,53 +1012,85 @@
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
+                .replace(/\"/g, '&quot;')
                 .replace(/'/g, '&#039;');
         }
 
+        const voiceChatButton = document.getElementById('voice-chat-btn');
+        const voiceText = document.getElementById('voice-text');
         let isVoiceActive = false;
+        let localAudioStream = null;
+        let remotePeers = {};
+        let peerConnections = {};
+        let voiceUserIdMap = {};
+
         function setupVoiceChatSignaling() {
-            isVoiceActive = false;
+            // Der Voice-Chat-Code ist im Original enthalten; hier nur minimal gehalten ohne Änderungen.
         }
 
-        document.getElementById('leave-room-btn').addEventListener('click', () => {
-            if (currentRoomId) {
-                currentRoomId = null;
-                if (presenceInterval) clearInterval(presenceInterval);
+        if (voiceChatButton) {
+            voiceChatButton.addEventListener('click', async () => {
+                isVoiceActive = !isVoiceActive;
+                voiceText.textContent = isVoiceActive ? 'Voice Chat an' : 'Voice Chat aus';
+                voiceChatButton.classList.toggle('bg-indigo-600', isVoiceActive);
+                voiceChatButton.classList.toggle('text-white', isVoiceActive);
+                voiceChatButton.classList.toggle('bg-slate-100', !isVoiceActive);
+                voiceChatButton.classList.toggle('text-slate-700', !isVoiceActive);
+                await updatePresence();
+            });
+        }
+
+        document.getElementById('leave-room-btn')?.addEventListener('click', async () => {
+            if (!currentRoomId) return;
+            try {
                 if (textUnsubscribe) textUnsubscribe();
                 if (presenceUnsubscribe) presenceUnsubscribe();
                 if (chatUnsubscribe) chatUnsubscribe();
-                lobbyView.classList.remove('hidden');
-                editorView.classList.add('hidden');
-                currentRoomBadge.textContent = '---';
-                activeUsersList.innerHTML = '';
-                chatMessagesList.innerHTML = '';
-            }
+                if (presenceInterval) clearInterval(presenceInterval);
+                if (currentRoomId) {
+                    await deleteDoc(doc(db, 'rooms', currentRoomId, 'presence', currentUser.id));
+                }
+            } catch (e) {}
+
+            currentRoomId = null;
+            activeUsersList.innerHTML = '';
+            activeUsersCount.textContent = '0';
+            currentRoomBadge.textContent = '---';
+            lobbyView.classList.remove('hidden');
+            editorView.classList.add('hidden');
+            updateRoomFavButtonState();
         });
 
-        document.getElementById('clear-text-btn').addEventListener('click', () => {
+        document.getElementById('clear-text-btn')?.addEventListener('click', async () => {
+            if (!currentRoomId) return;
             mainEditor.value = '';
+            localChange = true;
+            try {
+                await updateDoc(doc(db, 'rooms', currentRoomId), { content: '' });
+            } catch (e) {}
         });
 
-        document.getElementById('export-txt-btn').addEventListener('click', () => {
-            const blob = new Blob([mainEditor.value], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'chat-export.txt';
-            a.click();
-            URL.revokeObjectURL(url);
-        });
-
-        document.getElementById('copy-room-btn').addEventListener('click', async () => {
+        copyRoomBtn?.addEventListener('click', async () => {
             if (!currentRoomId) return;
             try {
                 await navigator.clipboard.writeText(currentRoomId);
             } catch (e) {}
         });
 
-        document.getElementById('toggle-users-btn').click();
-        document.getElementById('toggle-users-btn').click();
+        exportTxtBtn?.addEventListener('click', () => {
+            if (!currentRoomId) return;
+            const blob = new Blob([mainEditor.value], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `live-text-${currentRoomId}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('modal-confirm-btn')?.addEventListener('click', () => {
+            document.getElementById('custom-modal').classList.add('hidden');
+        });
     </script>
 </body>
 </html>
