@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Live Text</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
         body { font-family: 'Inter', sans-serif; }
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
@@ -18,7 +18,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 h-screen flex flex-col overflow-hidden">
 
-    <!-- Status Bar -->
     <header class="bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between shrink-0 shadow-sm">
         <div class="flex items-center space-x-3">
             <div class="bg-indigo-600 text-white p-2 rounded-lg flex items-center justify-center shadow-md">
@@ -29,7 +28,7 @@
                 <p class="text-xs text-slate-500">Echtzeit-Texteditor</p>
             </div>
         </div>
-        
+
         <div class="flex items-center space-x-4">
             <div id="connection-status" class="flex items-center space-x-2 px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-xs font-medium text-amber-700">
                 <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
@@ -42,10 +41,7 @@
         </div>
     </header>
 
-    <!-- Main Container -->
     <main class="flex-1 flex overflow-hidden relative">
-        
-        <!-- View 1: Raum-Auswahl (Lobby) -->
         <div id="lobby-view" class="absolute inset-0 bg-slate-50 flex items-center justify-center p-4 z-10 overflow-y-auto">
             <div class="bg-white rounded-2xl shadow-xl border border-slate-200 max-w-md w-full p-8 space-y-6">
                 <div class="text-center space-y-2">
@@ -63,13 +59,12 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-user-pen"></i>
                             </span>
-                            <input type="text" id="username-input" placeholder="Name eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" id="username-input" placeholder="Name eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" />
                         </div>
                     </div>
 
-                    <hr class="border-slate-100 my-2">
+                    <hr class="border-slate-100 my-2" />
 
-                    <!-- Raum erstellen -->
                     <div class="space-y-2">
                         <button id="create-room-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md shadow-indigo-100 flex items-center justify-center space-x-2">
                             <i class="fa-solid fa-plus"></i>
@@ -83,35 +78,31 @@
                         <div class="flex-grow border-t border-slate-200"></div>
                     </div>
 
-                    <!-- Raum beitreten + Letzte Räume Button -->
                     <div class="space-y-2">
                         <div class="relative">
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-key"></i>
                             </span>
-                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all" />
                         </div>
                         <div class="flex space-x-2">
                             <button id="join-room-btn" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2">
                                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                 <span>Raum betreten</span>
                             </button>
-                            <button id="toggle-recent-modal-btn" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 px-3.5 py-2.5 rounded-xl font-medium text-sm flex items-center space-x-1.5 transition-all" title="Letzte Räume & Favoriten">
+                            <button id="toggle-recent-modal-btn" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 px-3.5 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center space-x-1.5">
                                 <i class="fa-solid fa-star text-amber-500"></i>
                                 <span class="hidden sm:inline">Räume</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Liste der letzten & favorisierten Räume -->
                     <div id="recent-rooms-container" class="hidden bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2 mt-2">
                         <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider flex justify-between items-center">
                             <span>Letzte Räume & Favoriten</span>
                             <span class="text-[10px] text-slate-400"></span>
                         </div>
-                        <div id="recent-rooms-list" class="space-y-1 max-h-40 overflow-y-auto custom-scrollbar">
-                            <!-- Dynamisch befüllt -->
-                        </div>
+                        <div id="recent-rooms-list" class="space-y-1 max-h-40 overflow-y-auto custom-scrollbar"></div>
                     </div>
                 </div>
 
@@ -119,15 +110,11 @@
             </div>
         </div>
 
-        <!-- View 2: Editor, Whiteboard & Chat (Hauptansicht) -->
         <div id="editor-view" class="hidden flex-1 flex flex-col md:flex-row h-full w-full overflow-hidden">
-            
-            <!-- Linke Spalte: Editor & Text-Tools -->
             <div class="flex-1 flex flex-col h-full overflow-hidden bg-white border-r border-slate-200">
-                <!-- Editor Header / Toolbar -->
                 <div class="bg-white border-b border-slate-200 px-4 py-3 flex flex-wrap items-center justify-between gap-3 shrink-0">
                     <div class="flex items-center space-x-3">
-                        <button id="leave-room-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300">
+                        <button id="leave-room-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-200">
                             <i class="fa-solid fa-arrow-left"></i>
                             <span>Verlassen</span>
                         </button>
@@ -145,8 +132,8 @@
                     </div>
 
                     <div class="flex items-center space-x-2">
-                        <!-- Voice Chat Button -->
                         <button id="voice-chat-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300">
+                            <i id="voice-icon" class="fa-solid fa-microphone-slash text-slate-400"></i>
                             <span id="voice-text">Voice Chat aus</span>
                         </button>
 
@@ -160,93 +147,80 @@
                             <span>Speichern</span>
                         </button>
 
-                        <button id="open-canvas-btn" class="hidden px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-all items-center justify-center border border-slate-300 shadow-xs" title="Zeichenfläche öffnen">
+                        <button id="open-canvas-btn" class="hidden px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-all items-center justify-center w-8 h-8">
                             &lt;
                         </button>
                     </div>
                 </div>
 
-                <!-- Textarea -->
                 <div class="flex-1 p-4 bg-slate-50/50 flex flex-col overflow-hidden">
-                    <textarea id="main-editor" placeholder="Sicherheits-Info: Diese Chats sind öffentlich, nicht privat. Wenn also jemand weiß, was er tun muss, kann er alles in diesen Chats herausfinden." class="flex-1 w-full p-4 bg-white border border-slate-200 rounded-xl shadow-inner resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent custom-scrollbar"></textarea>
+                    <textarea id="main-editor" placeholder="Sicherheits-Info: Diese Chats sind öffentlich, nicht privat. Wenn also jemand weiß, was er tun muss, kann er alles in diesen Chats herausfinden." class="w-full h-full resize-none border-0 bg-transparent text-sm text-slate-700 leading-relaxed focus:outline-none"></textarea>
                 </div>
             </div>
 
-            <!-- Mittlere Spalte: Malfläche (Canvas) - Einklappbar -->
             <div id="canvas-container" class="w-full md:w-80 bg-white border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-64 md:h-full transition-all">
                 <div class="p-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
                     <div class="flex items-center space-x-2">
-                        <button id="close-canvas-btn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all" title="Malfläche einklappen">&gt;</button>
+                        <button id="close-canvas-btn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all" title="Malfläche einklappen">&lt;</button>
                         <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider flex items-center space-x-2">
                             <i class="fa-solid fa-paintbrush text-indigo-500"></i>
                             <span>Zeichenfläche</span>
                         </h3>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <input type="color" id="brush-color" value="#4f46e5" class="w-6 h-6 border-0 rounded cursor-pointer bg-transparent" title="Stiftfarbe">
+                        <input type="color" id="brush-color" value="#4f46e5" class="w-6 h-6 border-0 rounded cursor-pointer bg-transparent" title="Stiftfarbe" />
                         <button id="clear-canvas-btn" class="px-2 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-medium rounded border border-rose-200" title="Zeichnung löschen">
                             <i class="fa-solid fa-eraser"></i>
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="flex-1 relative bg-slate-100 overflow-hidden cursor-crosshair">
                     <canvas id="paint-canvas" class="w-full h-full block bg-white"></canvas>
                 </div>
             </div>
 
-            <!-- Äußerste rechte Spalte: Aktive Nutzer & Chat -->
-            <div id="chat-sidebar-container" class="w-full md:w-72 bg-slate-50 border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-80 md:h-full overflow-hidden transition-all duration-300">
-                <!-- Anwesend Bereich Header -->
+            <div id="chat-sidebar-container" class="w-full md:w-72 bg-slate-50 border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-80 md:h-full overflow-hidden transition-all">
                 <div class="p-3 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
                     <div class="flex items-center space-x-2">
                         <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider flex items-center space-x-2">
-                            <i class="fa-solid fa-users text-indigo-500"></i>
+                            <i id="users-header-icon" class="fa-solid fa-users text-indigo-500"></i>
                             <span class="sidebar-title-text">Anwesend</span>
                         </h3>
                     </div>
                     <div class="flex items-center space-x-2">
                         <span id="active-users-count" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
-                        <button id="toggle-users-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center space-x-1" title="Anwesenden-Liste einklappen">
+                        <button id="toggle-users-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center justify-center" title="Anwesenden-Liste einklappen">
                             <i id="toggle-users-icon" class="fa-solid fa-chevron-down"></i>
                         </button>
                     </div>
                 </div>
-                
-                <!-- Anwesenden Liste -->
-                <div id="active-users-list" class="max-h-36 overflow-y-auto p-2 space-y-1.5 custom-scrollbar border-b border-slate-200 shrink-0 bg-slate-50/50">
-                    <!-- Wird dynamisch gefüllt -->
-                </div>
 
-                <!-- Chat Bereich (SMS Style) -->
+                <div id="active-users-list" class="max-h-36 overflow-y-auto p-2 space-y-1.5 custom-scrollbar border-b border-slate-200 shrink-0 bg-slate-50/50"></div>
+
                 <div id="chat-content-box" class="flex-1 flex flex-col min-h-0 bg-white">
                     <div class="p-2 border-b border-slate-100 bg-slate-50 flex items-center justify-between shrink-0">
                         <h3 class="font-semibold text-[11px] text-slate-500 uppercase tracking-wider flex items-center space-x-1.5">
                             <i class="fa-solid fa-comments text-indigo-500"></i>
                             <span>Chat</span>
                         </h3>
-                        <button id="close-chat-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center space-x-1" title="Chat einklappen">
+                        <button id="close-chat-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center justify-center" title="Chat einklappen">
                             <i class="fa-solid fa-chevron-down"></i>
                         </button>
                     </div>
 
-                    <!-- Nachrichten Liste -->
-                    <div id="chat-messages-list" class="flex-1 p-2 overflow-hidden flex flex-col justify-end space-y-2 bg-slate-50/30">
-                        <!-- Chat Nachrichten kommen hier rein -->
-                    </div>
+                    <div id="chat-messages-list" class="flex-1 p-2 overflow-hidden flex flex-col justify-end space-y-2 bg-slate-50/30"></div>
 
-                    <!-- Chat Eingabe -->
                     <form id="chat-form" class="p-2 border-t border-slate-200 flex space-x-1.5 bg-white shrink-0">
-                        <input type="text" id="chat-input" placeholder="Nachricht Schreiben..." autocomplete="off" class="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                        <input type="text" id="chat-input" placeholder="Nachricht Schreiben..." autocomplete="off" class="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
                         <button type="submit" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-medium transition-colors">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </form>
                 </div>
 
-                <!-- Container unten zum Wiederanzeigen des Chats -->
                 <div id="open-chat-container" class="hidden p-2 bg-slate-50 border-t border-slate-200 flex justify-end items-center shrink-0">
-                    <button id="open-chat-btn-bottom" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center space-x-1" title="Chat öffnen">
+                    <button id="open-chat-btn-bottom" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center justify-center" title="Chat wieder anzeigen">
                         <i class="fa-solid fa-chevron-up"></i>
                     </button>
                 </div>
@@ -255,11 +229,9 @@
                     Maximal 10 Personen
                 </div>
             </div>
-
         </div>
     </main>
 
-    <!-- Bestätigungs Modal Dialog -->
     <div id="custom-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-4 shadow-xl border border-slate-100">
             <h3 id="modal-title" class="text-base font-bold text-slate-800">Bestätigung</h3>
@@ -271,35 +243,8 @@
         </div>
     </div>
 
-    <!-- Benutzereinstellungen Modal Dialog -->
-    <div id="user-settings-modal" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 space-y-5 shadow-xl border border-slate-100">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                <h3 id="settings-user-name" class="text-sm font-bold text-slate-800 truncate">Benutzereinstellungen</h3>
-                <button id="close-settings-modal-btn" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg transition-colors">
-                    <i class="fa-solid fa-xmark text-base"></i>
-                </button>
-            </div>
-            
-            <div class="space-y-3">
-                <div class="flex justify-between items-center">
-                    <label class="text-xs font-semibold text-slate-600 uppercase tracking-wider">Lautstärke</label>
-                    <span id="settings-volume-text" class="text-xs font-mono font-bold text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">100%</span>
-                </div>
-                <input type="range" id="settings-volume-slider" min="0" max="200" value="100" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600">
-                <div class="flex justify-between text-[10px] text-slate-400 font-medium px-0.5">
-                    <span>Mute</span>
-                    <span>100%</span>
-                    <span>200%</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Audios Container für Voicechat -->
     <div id="audio-container" class="hidden"></div>
 
-    <!-- Firebase SDKs via CDN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, collection, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -313,9 +258,7 @@
             appId: "1:968443356315:web:ad21cd26d2ddd5d078923e"
         };
 
-        let app;
-        let db;
-        let isOnline = false;
+        let app; let db; let isOnline = false;
 
         try {
             app = initializeApp(fallbackConfig);
@@ -347,73 +290,30 @@
             name: 'Gast-' + Math.floor(Math.random() * 9000 + 1000)
         };
         let userDisplayNames = {};
-        let userSpeakingStatus = {};
-        let userVolumes = {}; // Speichert die individuelle Lautstärke pro User (0 = Stumm)
 
         const usernameInput = document.getElementById('username-input');
-
         const savedUsername = localStorage.getItem('saved_collab_username');
         if (savedUsername) {
             usernameInput.value = savedUsername;
             currentUser.name = savedUsername;
         }
 
-        function showConfirmModal(title, message, onConfirm) {
-            const modal = document.getElementById('custom-modal');
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-message').textContent = message;
-            modal.classList.remove('hidden');
-
-            const confirmBtn = document.getElementById('modal-confirm-btn');
-            const cancelBtn = document.getElementById('modal-cancel-btn');
-
-            const handleConfirm = () => {
-                modal.classList.add('hidden');
-                cleanup();
-                onConfirm();
-            };
-
-            const handleCancel = () => {
-                modal.classList.add('hidden');
-                cleanup();
-            };
-
-            const cleanup = () => {
-                confirmBtn.removeEventListener('click', handleConfirm);
-                cancelBtn.removeEventListener('click', handleCancel);
-            };
-
-            confirmBtn.addEventListener('click', handleConfirm);
-            cancelBtn.addEventListener('click', handleCancel);
-        }
-
         function getSavedRooms() {
-            try {
-                return JSON.parse(localStorage.getItem('saved_collab_rooms')) || [];
-            } catch (e) {
-                return [];
-            }
+            try { return JSON.parse(localStorage.getItem('saved_collab_rooms')) || []; } catch (e) { return []; }
         }
-
-        function saveRoomsToStorage(rooms) {
-            localStorage.setItem('saved_collab_rooms', JSON.stringify(rooms));
-        }
+        function saveRoomsToStorage(rooms) { localStorage.setItem('saved_collab_rooms', JSON.stringify(rooms)); }
 
         function addRoomToHistory(roomId) {
             let rooms = getSavedRooms();
             const existingIndex = rooms.findIndex(r => r.id === roomId);
             let isFav = false;
-
             if (existingIndex !== -1) {
                 isFav = rooms[existingIndex].favorite;
                 rooms.splice(existingIndex, 1);
             }
-
             rooms.unshift({ id: roomId, favorite: isFav, timestamp: Date.now() });
-
             const favorites = rooms.filter(r => r.favorite);
             const nonFavorites = rooms.filter(r => !r.favorite).slice(0, 2);
-            
             rooms = [...favorites, ...nonFavorites];
             saveRoomsToStorage(rooms);
             renderRecentRoomsUI();
@@ -422,11 +322,8 @@
         function toggleFavorite(roomId) {
             let rooms = getSavedRooms();
             const room = rooms.find(r => r.id === roomId);
-            if (room) {
-                room.favorite = !room.favorite;
-            } else {
-                rooms.unshift({ id: roomId, favorite: true, timestamp: Date.now() });
-            }
+            if (room) room.favorite = !room.favorite;
+            else rooms.unshift({ id: roomId, favorite: true, timestamp: Date.now() });
             saveRoomsToStorage(rooms);
             renderRecentRoomsUI();
             updateRoomFavButtonState();
@@ -435,12 +332,10 @@
         function renderRecentRoomsUI() {
             const rooms = getSavedRooms();
             const listEl = document.getElementById('recent-rooms-list');
-            
             if (rooms.length === 0) {
                 listEl.innerHTML = '<div class="text-xs text-slate-400 py-1">Keine gespeicherten Räume</div>';
                 return;
             }
-
             listEl.innerHTML = rooms.map(r => `
                 <div class="flex items-center justify-between bg-white p-2 rounded-lg border border-slate-200 hover:border-indigo-300 transition-all">
                     <button onclick="window.selectRoomCode('${r.id}')" class="text-xs font-mono font-bold text-indigo-600 hover:underline flex items-center space-x-1.5">
@@ -454,24 +349,15 @@
             `).join('');
         }
 
-        window.selectRoomCode = (id) => {
-            document.getElementById('room-id-input').value = id;
-        };
-
-        window.toggleFavRoom = (id) => {
-            toggleFavorite(id);
-        };
+        window.selectRoomCode = (id) => document.getElementById('room-id-input').value = id;
+        window.toggleFavRoom = (id) => toggleFavorite(id);
 
         function updateRoomFavButtonState() {
             if (!currentRoomId) return;
             const rooms = getSavedRooms();
             const room = rooms.find(r => r.id === currentRoomId);
             const favBtn = document.getElementById('toggle-room-fav-btn');
-            if (room && room.favorite) {
-                favBtn.className = "text-amber-400 hover:text-amber-500 p-1 text-xs transition-colors";
-            } else {
-                favBtn.className = "text-slate-300 hover:text-amber-400 p-1 text-xs transition-colors";
-            }
+            favBtn.className = room && room.favorite ? "text-amber-400 hover:text-amber-500 p-1 text-xs transition-colors" : "text-slate-300 hover:text-amber-400 p-1 text-xs transition-colors";
         }
 
         document.getElementById('toggle-recent-modal-btn').addEventListener('click', () => {
@@ -479,11 +365,8 @@
             container.classList.toggle('hidden');
             renderRecentRoomsUI();
         });
-
         document.getElementById('toggle-room-fav-btn').addEventListener('click', () => {
-            if (currentRoomId) {
-                toggleFavorite(currentRoomId);
-            }
+            if (currentRoomId) toggleFavorite(currentRoomId);
         });
 
         let textUnsubscribe = null;
@@ -510,11 +393,72 @@
         const activeUsersList = document.getElementById('active-users-list');
         const activeUsersCount = document.getElementById('active-users-count');
 
-        // Malen Elements & Toggle
         const canvasContainer = document.getElementById('canvas-container');
         const closeCanvasBtn = document.getElementById('close-canvas-btn');
         const openCanvasBtn = document.getElementById('open-canvas-btn');
         const canvas = document.getElementById('paint-canvas');
+        const ctx = canvas.getContext('2d');
+        const brushColor = document.getElementById('brush-color');
+        const clearCanvasBtn = document.getElementById('clear-canvas-btn');
+        let isDrawing = false;
+        let localDrawing = false;
+
+        const chatSidebarContainer = document.getElementById('chat-sidebar-container');
+        const chatContentBox = document.getElementById('chat-content-box');
+        const openChatBtnBottom = document.getElementById('open-chat-btn-bottom');
+        const openChatContainer = document.getElementById('open-chat-container');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const toggleUsersBtn = document.getElementById('toggle-users-btn');
+        const toggleUsersIcon = document.getElementById('toggle-users-icon');
+        const usersHeaderIcon = document.getElementById('users-header-icon');
+
+        function updateSidebarWidthState() {
+            const isChatHidden = chatContentBox.classList.contains('hidden');
+            const isUsersHidden = activeUsersList.classList.contains('hidden');
+
+            if (isChatHidden && isUsersHidden) {
+                chatSidebarContainer.classList.remove('md:w-72');
+                chatSidebarContainer.classList.add('md:w-12');
+                document.querySelector('.sidebar-title-text').classList.add('hidden');
+                if (usersHeaderIcon) usersHeaderIcon.classList.add('hidden');
+                activeUsersCount.classList.add('hidden');
+                document.getElementById('sidebar-footer-text').classList.add('hidden');
+            } else {
+                chatSidebarContainer.classList.remove('md:w-12');
+                chatSidebarContainer.classList.add('md:w-72');
+                document.querySelector('.sidebar-title-text').classList.remove('hidden');
+                if (usersHeaderIcon) usersHeaderIcon.classList.remove('hidden');
+                activeUsersCount.classList.remove('hidden');
+                document.getElementById('sidebar-footer-text').classList.remove('hidden');
+            }
+        }
+
+        toggleUsersBtn.addEventListener('click', () => {
+            const isHidden = activeUsersList.classList.toggle('hidden');
+            toggleUsersIcon.className = isHidden ? 'fa-solid fa-chevron-up' : 'fa-solid fa-chevron-down';
+            toggleUsersBtn.title = isHidden ? 'Anwesenden-Liste ausklappen' : 'Anwesenden-Liste einklappen';
+            updateSidebarWidthState();
+        });
+
+        closeChatBtn.addEventListener('click', () => {
+            chatContentBox.classList.add('hidden');
+            openChatContainer.classList.remove('hidden');
+            openChatBtnBottom.classList.remove('hidden');
+            activeUsersList.classList.remove('max-h-36', 'shrink-0', 'border-b');
+            activeUsersList.classList.add('flex-1', 'min-h-0');
+            updateSidebarWidthState();
+        });
+
+        const handleOpenChat = () => {
+            chatContentBox.classList.remove('hidden');
+            openChatContainer.classList.add('hidden');
+            openChatBtnBottom.classList.add('hidden');
+            activeUsersList.classList.add('max-h-36', 'shrink-0', 'border-b');
+            activeUsersList.classList.remove('flex-1', 'min-h-0');
+            updateSidebarWidthState();
+        };
+
+        if (openChatBtnBottom) openChatBtnBottom.addEventListener('click', handleOpenChat);
 
         function toggleCanvasVisibility(show) {
             if (show) {
@@ -527,99 +471,8 @@
             }
         }
 
-        closeCanvasBtn.addEventListener('click', () => {
-            toggleCanvasVisibility(false);
-        });
-
-        if (openCanvasBtn) {
-            openCanvasBtn.addEventListener('click', () => {
-                toggleCanvasVisibility(true);
-            });
-        }
-
-        // Chat Elements & Toggle
-        const chatSidebarContainer = document.getElementById('chat-sidebar-container');
-        const chatContentBox = document.getElementById('chat-content-box');
-        const openChatBtnBottom = document.getElementById('open-chat-btn-bottom');
-        const openChatContainer = document.getElementById('open-chat-container');
-        const closeChatBtn = document.getElementById('close-chat-btn');
-
-        // Anwesenden-Liste Toggle
-        const toggleUsersBtn = document.getElementById('toggle-users-btn');
-        const toggleUsersIcon = document.getElementById('toggle-users-icon');
-
-        // Hilfsfunktion zur Prüfung, ob BEIDE (Chat und Anwesend-Liste) eingeklappt sind
-        function updateSidebarWidthState() {
-            const isChatHidden = chatContentBox.classList.contains('hidden');
-            const isUsersHidden = activeUsersList.classList.contains('hidden');
-
-            if (isChatHidden && isUsersHidden) {
-                // Sehr schmal machen wenn beides zu ist
-                chatSidebarContainer.classList.remove('md:w-72');
-                chatSidebarContainer.classList.add('md:w-12');
-                // Texte und Indikatoren optional ausblenden im Schmalmodus
-                document.querySelector('.sidebar-title-text').classList.add('hidden');
-                activeUsersCount.classList.add('hidden');
-                document.getElementById('sidebar-footer-text').classList.add('hidden');
-            } else {
-                // Wieder normale Breite
-                chatSidebarContainer.classList.remove('md:w-12');
-                chatSidebarContainer.classList.add('md:w-72');
-                document.querySelector('.sidebar-title-text').classList.remove('hidden');
-                activeUsersCount.classList.remove('hidden');
-                document.getElementById('sidebar-footer-text').classList.remove('hidden');
-            }
-        }
-
-        if (toggleUsersBtn && toggleUsersIcon) {
-            toggleUsersBtn.addEventListener('click', () => {
-                const isHidden = activeUsersList.classList.toggle('hidden');
-                if (isHidden) {
-                    toggleUsersIcon.className = "fa-solid fa-chevron-up";
-                    toggleUsersBtn.title = "Anwesenden-Liste ausklappen";
-                } else {
-                    toggleUsersIcon.className = "fa-solid fa-chevron-down";
-                    toggleUsersBtn.title = "Anwesenden-Liste einklappen";
-                }
-                updateSidebarWidthState();
-            });
-        }
-
-        // Chat ausblenden
-        closeChatBtn.addEventListener('click', () => {
-            chatContentBox.classList.add('hidden');
-            if (openChatContainer) {
-                openChatContainer.classList.remove('hidden');
-            }
-            if (openChatBtnBottom) {
-                openChatBtnBottom.classList.remove('hidden');
-            }
-            activeUsersList.classList.remove('max-h-36', 'shrink-0', 'border-b');
-            activeUsersList.classList.add('flex-1', 'min-h-0');
-            updateSidebarWidthState();
-        });
-
-        // Chat einblenden
-        const handleOpenChat = () => {
-            chatContentBox.classList.remove('hidden');
-            if (openChatContainer) {
-                openChatContainer.classList.add('hidden');
-            }
-            if (openChatBtnBottom) {
-                openChatBtnBottom.classList.add('hidden');
-            }
-            activeUsersList.classList.add('max-h-36', 'shrink-0', 'border-b');
-            activeUsersList.classList.remove('flex-1', 'min-h-0');
-            updateSidebarWidthState();
-        };
-
-        if (openChatBtnBottom) openChatBtnBottom.addEventListener('click', handleOpenChat);
-
-        const ctx = canvas.getContext('2d');
-        const brushColor = document.getElementById('brush-color');
-        const clearCanvasBtn = document.getElementById('clear-canvas-btn');
-        let isDrawing = false;
-        let localDrawing = false;
+        closeCanvasBtn.addEventListener('click', () => toggleCanvasVisibility(false));
+        if (openCanvasBtn) openCanvasBtn.addEventListener('click', () => toggleCanvasVisibility(true));
 
         function resizeCanvas() {
             if (canvasContainer.classList.contains('hidden')) return;
@@ -630,7 +483,6 @@
                 tempCanvas.height = canvas.height;
                 const tempCtx = tempCanvas.getContext('2d');
                 tempCtx.drawImage(canvas, 0, 0);
-
                 canvas.width = rect.width;
                 canvas.height = rect.height;
                 ctx.drawImage(tempCanvas, 0, 0);
@@ -658,72 +510,59 @@
 
         createRoomBtn.addEventListener('click', async () => {
             if (!isOnline) {
-                showError("Keine Verbindung zur Cloud möglich.");
+                showError('Keine Verbindung zur Cloud möglich.');
                 return;
             }
             setupUser();
             const newRoomId = Math.random().toString(36).substring(2, 8).toUpperCase();
-            
             try {
                 const roomRef = doc(db, 'rooms', newRoomId);
-                await setDoc(roomRef, {
-                    content: "",
-                    drawing: "",
-                    createdAt: serverTimestamp(),
-                    host: currentUser.id
-                });
+                await setDoc(roomRef, { content: '', drawing: '', createdAt: serverTimestamp(), host: currentUser.id });
                 await enterRoom(newRoomId);
             } catch (err) {
                 console.error(err);
-                showError("Fehler beim Erstellen des Raumes.");
+                showError('Fehler beim Erstellen des Raumes.');
             }
         });
 
         joinRoomBtn.addEventListener('click', async () => {
             if (!isOnline) {
-                showError("Keine Verbindung zur Cloud möglich.");
+                showError('Keine Verbindung zur Cloud möglich.');
                 return;
             }
             const roomId = roomIdInput.value.trim().toUpperCase();
             if (!roomId) {
-                showError("Bitte gib einen Raum-Code ein.");
+                showError('Bitte gib einen Raum-Code ein.');
                 return;
             }
             setupUser();
-
             try {
                 const roomRef = doc(db, 'rooms', roomId);
                 const snap = await getDoc(roomRef);
                 if (!snap.exists()) {
-                    showError("Raum existiert nicht!");
+                    showError('Raum existiert nicht!');
                     return;
                 }
-
                 const presenceSnap = await getDocs(collection(db, 'rooms', roomId, 'presence'));
                 const now = Date.now();
                 let activeCount = 0;
                 presenceSnap.forEach(d => {
                     if (d.id === currentUser.id) return;
                     const data = d.data();
-                    if (!data.lastSeen) {
-                        activeCount++;
-                    } else {
+                    if (!data.lastSeen) activeCount++;
+                    else {
                         const lastSeenTime = data.lastSeen.toMillis ? data.lastSeen.toMillis() : now;
-                        if (now - lastSeenTime < 25000) {
-                            activeCount++;
-                        }
+                        if (now - lastSeenTime < 25000) activeCount++;
                     }
                 });
-
                 if (activeCount >= 10) {
-                    showError("Dieser Raum ist voll (maximal 10 Personen erlaubt).");
+                    showError('Dieser Raum ist voll (maximal 10 Personen erlaubt).');
                     return;
                 }
-
                 await enterRoom(roomId);
             } catch (err) {
                 console.error(err);
-                showError("Fehler beim Beitreten des Raumes.");
+                showError('Fehler beim Beitreten des Raumes.');
             }
         });
 
@@ -732,22 +571,16 @@
             currentRoomBadge.textContent = roomId;
             addRoomToHistory(roomId);
             updateRoomFavButtonState();
-
             lobbyView.classList.add('hidden');
             editorView.classList.remove('hidden');
-
             setTimeout(resizeCanvas, 50);
 
             const roomRef = doc(db, 'rooms', roomId);
-            
             textUnsubscribe = onSnapshot(roomRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    if (!localChange && mainEditor.value !== data.content) {
-                        mainEditor.value = data.content || '';
-                    }
+                    if (!localChange && mainEditor.value !== data.content) mainEditor.value = data.content || '';
                     localChange = false;
-
                     if (!localDrawing && data.drawing) {
                         const img = new Image();
                         img.onload = () => {
@@ -760,6 +593,16 @@
                 }
             });
 
+            const userPresenceRef = doc(db, 'rooms', roomId, 'presence', currentUser.id);
+            async function updatePresence() {
+                try {
+                    await setDoc(userPresenceRef, {
+                        id: currentUser.id,
+                        name: currentUser.name,
+                        lastSeen: serverTimestamp()
+                    });
+                } catch (e) {}
+            }
             await updatePresence();
             presenceInterval = setInterval(updatePresence, 10000);
 
@@ -767,161 +610,41 @@
             presenceUnsubscribe = onSnapshot(presenceCol, (snapshot) => {
                 let users = [];
                 const now = Date.now();
-                
                 snapshot.forEach(docSnap => {
                     const data = docSnap.data();
                     const userId = docSnap.id;
                     let isUserActive = true;
-                    
                     if (data.lastSeen) {
                         const lastSeenTime = data.lastSeen.toMillis ? data.lastSeen.toMillis() : now;
-                        if (now - lastSeenTime >= 25000) {
-                            isUserActive = false;
-                        }
+                        if (now - lastSeenTime >= 25000) isUserActive = false;
                     }
-
-                    if (isUserActive) {
-                        users.push({
-                            id: userId,
-                            name: data.name || 'Gast',
-                            isMuted: data.isMuted !== undefined ? data.isMuted : true,
-                            isSpeaking: data.isSpeaking || false
-                        });
-                    }
+                    if (isUserActive) users.push({ id: userId, name: data.name || 'Gast' });
                 });
-
                 users.sort((a, b) => a.id.localeCompare(b.id));
-
                 const nameCounts = {};
                 userDisplayNames = {};
                 const formattedUsers = users.map(u => {
                     const baseName = u.name;
                     let displayName = baseName;
-                    if (!nameCounts[baseName]) {
-                        nameCounts[baseName] = 1;
-                    } else {
+                    if (!nameCounts[baseName]) nameCounts[baseName] = 1;
+                    else {
                         nameCounts[baseName]++;
                         displayName = `${baseName} (${nameCounts[baseName]})`;
                     }
                     userDisplayNames[u.id] = displayName;
                     return { ...u, displayName };
                 });
-
                 activeUsersCount.textContent = formattedUsers.length;
-
-                activeUsersList.innerHTML = formattedUsers.map(u => {
-                    const isSelf = u.id === currentUser.id;
-                    const isSpeaking = isSelf ? (userSpeakingStatus[u.id] || false) : u.isSpeaking;
-                    const isMutedByVol = userVolumes[u.id] === 0;
-
-                    let voiceStatusIcon = '';
-                    if (u.isMuted) {
-                        voiceStatusIcon = `<i class="fa-solid fa-volume-xmark text-slate-400 text-xs select-none" title="Voice Chat aus"></i>`;
-                    } else if (isMutedByVol) {
-                        voiceStatusIcon = `<span class="text-xs text-slate-400 select-none" title="Stummgeschaltet">🔇</span>`;
-                    } else if (isSpeaking) {
-                        voiceStatusIcon = `<span class="text-xs text-slate-400 select-none animate-pulse" title="Spricht">🔊</span>`;
-                    } else {
-                        voiceStatusIcon = `<span class="text-xs text-slate-400 select-none" title="Aktiv">🔉</span>`;
-                    }
-
-                    const settingsButton = !isSelf ? `
-                        <button onclick="window.openUserSettingsModal('${u.id}')" class="text-slate-400 hover:text-indigo-600 px-1 text-xs transition-colors" title="Einstellungen / Lautstärke">
-                            <i class="fa-solid fa-sliders"></i>
-                        </button>
-                    ` : '';
-
-                    return `
-                        <div class="flex flex-col p-1.5 bg-white rounded-lg border border-slate-200 shadow-xs">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center space-x-1.5 truncate pr-2">
-                                    <div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
-                                    <span class="text-xs font-medium text-slate-700 truncate">${escapeHtml(u.displayName)}</span>
-                                </div>
-                                <div class="flex items-center space-x-1 shrink-0">
-                                    ${settingsButton}
-                                    ${voiceStatusIcon}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
+                activeUsersList.innerHTML = formattedUsers.map(u => `
+                    <div class="flex items-center space-x-2 p-1.5 bg-white rounded-lg border border-slate-200 shadow-xs">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></div>
+                        <span class="text-xs font-medium text-slate-700 truncate">${escapeHtml(u.displayName)}</span>
+                    </div>
+                `).join('');
             });
 
             setupVoiceChatSignaling();
             setupSMSChat();
-        }
-
-        let activeSettingsUserId = null;
-        let userGainNodes = {};
-        let userAudioCtxs = {};
-
-        window.openUserSettingsModal = (userId) => {
-            activeSettingsUserId = userId;
-            const displayName = userDisplayNames[userId] || 'Benutzer';
-            document.getElementById('settings-user-name').textContent = `Einstellungen: ${displayName}`;
-            
-            const currentVol = userVolumes[userId] !== undefined ? userVolumes[userId] : 100;
-            const slider = document.getElementById('settings-volume-slider');
-            const volText = document.getElementById('settings-volume-text');
-            
-            slider.value = currentVol;
-            volText.textContent = currentVol === 0 ? 'Mute' : `${currentVol}%`;
-            
-            document.getElementById('user-settings-modal').classList.remove('hidden');
-        };
-
-        const settingsSlider = document.getElementById('settings-volume-slider');
-        if (settingsSlider) {
-            settingsSlider.addEventListener('input', (e) => {
-                if (!activeSettingsUserId) return;
-                const vol = parseInt(e.target.value, 10);
-                window.setUserVolume(activeSettingsUserId, vol);
-            });
-        }
-
-        const closeSettingsModal = () => {
-            document.getElementById('user-settings-modal').classList.add('hidden');
-            activeSettingsUserId = null;
-        };
-
-        document.getElementById('close-settings-modal-btn')?.addEventListener('click', closeSettingsModal);
-
-        window.setUserVolume = (userId, value) => {
-            const vol = parseInt(value, 10);
-            userVolumes[userId] = vol;
-
-            if (userGainNodes[userId]) {
-                userGainNodes[userId].gain.value = vol / 100;
-                if (userAudioCtxs[userId] && userAudioCtxs[userId].state === 'suspended') {
-                    userAudioCtxs[userId].resume();
-                }
-            }
-
-            const audioEl = document.getElementById(`audio-${userId}`);
-            if (audioEl) {
-                audioEl.volume = Math.min(1, vol / 100);
-                audioEl.muted = (vol === 0);
-            }
-
-            const volTxt = document.getElementById('settings-volume-text');
-            if (volTxt && activeSettingsUserId === userId) {
-                volTxt.textContent = vol === 0 ? 'Mute' : `${vol}%`;
-            }
-        };
-
-        async function updatePresence() {
-            if (!currentRoomId) return;
-            try {
-                const userPresenceRef = doc(db, 'rooms', currentRoomId, 'presence', currentUser.id);
-                await setDoc(userPresenceRef, {
-                    id: currentUser.id,
-                    name: currentUser.name,
-                    isMuted: !isVoiceActive,
-                    isSpeaking: !!userSpeakingStatus[currentUser.id],
-                    lastSeen: serverTimestamp()
-                }, { merge: true });
-            } catch(e) {}
         }
 
         const chatForm = document.getElementById('chat-form');
@@ -931,19 +654,14 @@
         function setupSMSChat() {
             if (!currentRoomId) return;
             const chatCol = collection(db, 'rooms', currentRoomId, 'chat');
-
             chatUnsubscribe = onSnapshot(chatCol, (snapshot) => {
                 let msgs = [];
-                snapshot.forEach(docSnap => {
-                    msgs.push({ id: docSnap.id, ...docSnap.data() });
-                });
-
+                snapshot.forEach(docSnap => msgs.push({ id: docSnap.id, ...docSnap.data() }));
                 msgs.sort((a, b) => {
                     const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : Date.now();
                     const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : Date.now();
                     return ta - tb;
                 });
-
                 renderChatMessages(msgs);
             });
         }
@@ -952,10 +670,8 @@
             e.preventDefault();
             const text = chatInput.value.trim();
             if (!text || !currentRoomId || !isOnline) return;
-
             chatInput.value = '';
             const myDisplayName = userDisplayNames[currentUser.id] || currentUser.name;
-
             try {
                 await addDoc(collection(db, 'rooms', currentRoomId, 'chat'), {
                     senderId: currentUser.id,
@@ -963,7 +679,7 @@
                     text: text,
                     createdAt: serverTimestamp()
                 });
-            } catch(e) {}
+            } catch (e) {}
         });
 
         function renderChatMessages(msgs) {
@@ -979,7 +695,6 @@
                     </div>
                 `;
             }).join('');
-
             pruneOffscreenChat();
         }
 
@@ -988,26 +703,28 @@
                 const oldestChild = chatMessagesList.firstChild;
                 const msgId = oldestChild.getAttribute('data-msg-id');
                 chatMessagesList.removeChild(oldestChild);
-
                 if (msgId && currentRoomId && isOnline) {
-                    try {
-                        await deleteDoc(doc(doc(db, 'rooms', currentRoomId, 'chat', msgId)));
-                    } catch(e) {}
+                    try { await deleteDoc(doc(db, 'rooms', currentRoomId, 'chat', msgId)); } catch (e) {}
                 }
             }
         }
 
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/\"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
         let localVoiceStream = null;
         let isVoiceActive = false;
-        let audioContext = null;
-        let analyser = null;
-        let animFrameId = null;
         const peerConnections = {};
-        const rtcConfig = {
-            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-        };
+        const rtcConfig = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
 
         const voiceChatBtn = document.getElementById('voice-chat-btn');
+        const voiceIcon = document.getElementById('voice-icon');
         const voiceText = document.getElementById('voice-text');
         const audioContainer = document.getElementById('audio-container');
 
@@ -1016,44 +733,12 @@
                 try {
                     localVoiceStream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     isVoiceActive = true;
-                    
                     voiceChatBtn.className = "px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-emerald-200";
-                    voiceText.textContent = "Voice Chat an";
-
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const source = audioContext.createMediaStreamSource(localVoiceStream);
-                    analyser = audioContext.createAnalyser();
-                    analyser.fftSize = 256;
-                    source.connect(analyser);
-
-                    const bufferLength = analyser.frequencyBinCount;
-                    const dataArray = new Uint8Array(bufferLength);
-                    const THRESHOLD = 15;
-
-                    function checkVolume() {
-                        if (!isVoiceActive) return;
-                        analyser.getByteFrequencyData(dataArray);
-                        let sum = 0;
-                        for (let i = 0; i < bufferLength; i++) {
-                            sum += dataArray[i];
-                        }
-                        const average = sum / bufferLength;
-
-                        const currentlySpeaking = average > THRESHOLD;
-                        if (userSpeakingStatus[currentUser.id] !== currentlySpeaking) {
-                            userSpeakingStatus[currentUser.id] = currentlySpeaking;
-                            updatePresence();
-                        }
-
-                        animFrameId = requestAnimationFrame(checkVolume);
-                    }
-
-                    checkVolume();
-
-                    await updatePresence();
+                    voiceIcon.className = "fa-solid fa-microphone text-emerald-600 animate-pulse";
+                    voiceText.textContent = "";
                     broadcastVoiceOffer();
                 } catch (e) {
-                    showError("Zugriff auf Mikrofon verweigert oder nicht unterstützt.");
+                    showError('Zugriff auf Mikrofon verweigert oder nicht unterstützt.');
                 }
             } else {
                 stopVoiceChat();
@@ -1061,47 +746,26 @@
         });
 
         function stopVoiceChat() {
-            if (animFrameId) {
-                cancelAnimationFrame(animFrameId);
-                animFrameId = null;
-            }
-            if (audioContext) {
-                audioContext.close();
-                audioContext = null;
-            }
             if (localVoiceStream) {
                 localVoiceStream.getTracks().forEach(track => track.stop());
                 localVoiceStream = null;
             }
             isVoiceActive = false;
-            userSpeakingStatus[currentUser.id] = false;
             voiceChatBtn.className = "px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300";
-            voiceText.textContent = "Voice Chat aus";
-
-            updatePresence();
-
+            voiceIcon.className = "fa-solid fa-microphone-slash text-slate-400";
+            voiceText.textContent = "";
             Object.keys(peerConnections).forEach(peerId => {
                 peerConnections[peerId].close();
                 delete peerConnections[peerId];
             });
-            Object.keys(userAudioCtxs).forEach(peerId => {
-                try { userAudioCtxs[peerId].close(); } catch(e) {}
-            });
-            userGainNodes = {};
-            userAudioCtxs = {};
             audioContainer.innerHTML = '';
         }
 
         function createPeerConnection(targetUserId) {
             if (peerConnections[targetUserId]) return peerConnections[targetUserId];
-
             const pc = new RTCPeerConnection(rtcConfig);
             peerConnections[targetUserId] = pc;
-
-            if (localVoiceStream) {
-                localVoiceStream.getTracks().forEach(track => pc.addTrack(track, localVoiceStream));
-            }
-
+            if (localVoiceStream) localVoiceStream.getTracks().forEach(track => pc.addTrack(track, localVoiceStream));
             pc.ontrack = (event) => {
                 let audioEl = document.getElementById(`audio-${targetUserId}`);
                 if (!audioEl) {
@@ -1111,32 +775,7 @@
                     audioContainer.appendChild(audioEl);
                 }
                 audioEl.srcObject = event.streams[0];
-                
-                try {
-                    if (!userAudioCtxs[targetUserId]) {
-                        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                        const ctx = new AudioCtx();
-                        const source = ctx.createMediaStreamSource(event.streams[0]);
-                        const gainNode = ctx.createGain();
-                        
-                        const currentVol = userVolumes[targetUserId] !== undefined ? userVolumes[targetUserId] : 100;
-                        gainNode.gain.value = currentVol / 100;
-                        
-                        source.connect(gainNode);
-                        gainNode.connect(ctx.destination);
-                        
-                        userGainNodes[targetUserId] = gainNode;
-                        userAudioCtxs[targetUserId] = ctx;
-                        
-                        audioEl.muted = true;
-                    }
-                } catch(err) {
-                    console.warn("WebAudio GainNode Fehler:", err);
-                }
-
-                window.setUserVolume(targetUserId, userVolumes[targetUserId] !== undefined ? userVolumes[targetUserId] : 100);
             };
-
             pc.onicecandidate = (event) => {
                 if (event.candidate && currentRoomId) {
                     addDoc(collection(db, 'rooms', currentRoomId, 'signals'), {
@@ -1147,63 +786,41 @@
                     });
                 }
             };
-
             return pc;
         }
 
         async function broadcastVoiceOffer() {
             if (!currentRoomId) return;
             const signalCol = collection(db, 'rooms', currentRoomId, 'signals');
-            await addDoc(signalCol, {
-                sender: currentUser.id,
-                receiver: 'ALL',
-                type: 'ping'
-            });
+            await addDoc(signalCol, { sender: currentUser.id, receiver: 'ALL', type: 'ping' });
         }
 
         function setupVoiceChatSignaling() {
             if (!currentRoomId) return;
             const signalsCol = collection(db, 'rooms', currentRoomId, 'signals');
-
             signalUnsubscribe = onSnapshot(signalsCol, (snapshot) => {
                 snapshot.docChanges().forEach(async (change) => {
-                    if (change.type === 'added') {
-                        const data = change.doc.data();
-                        if (data.sender === currentUser.id) return;
-
-                        if (data.receiver === currentUser.id || data.receiver === 'ALL') {
-                            if (data.type === 'ping' && isVoiceActive) {
-                                const pc = createPeerConnection(data.sender);
-                                const offer = await pc.createOffer();
-                                await pc.setLocalDescription(offer);
-                                await addDoc(signalsCol, {
-                                    sender: currentUser.id,
-                                    receiver: data.sender,
-                                    type: 'offer',
-                                    sdp: JSON.stringify(offer)
-                                });
-                            } else if (data.type === 'offer') {
-                                const pc = createPeerConnection(data.sender);
-                                await pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data.sdp)));
-                                const answer = await pc.createAnswer();
-                                await pc.setLocalDescription(answer);
-                                await addDoc(signalsCol, {
-                                    sender: currentUser.id,
-                                    receiver: data.sender,
-                                    type: 'answer',
-                                    sdp: JSON.stringify(answer)
-                                });
-                            } else if (data.type === 'answer') {
-                                const pc = peerConnections[data.sender];
-                                if (pc) {
-                                    await pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data.sdp)));
-                                }
-                            } else if (data.type === 'candidate') {
-                                const pc = peerConnections[data.sender];
-                                if (pc) {
-                                    await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)));
-                                }
-                            }
+                    if (change.type !== 'added') return;
+                    const data = change.doc.data();
+                    if (data.sender === currentUser.id) return;
+                    if (data.receiver === currentUser.id || data.receiver === 'ALL') {
+                        if (data.type === 'ping' && isVoiceActive) {
+                            const pc = createPeerConnection(data.sender);
+                            const offer = await pc.createOffer();
+                            await pc.setLocalDescription(offer);
+                            await addDoc(signalsCol, { sender: currentUser.id, receiver: data.sender, type: 'offer', sdp: JSON.stringify(offer) });
+                        } else if (data.type === 'offer') {
+                            const pc = createPeerConnection(data.sender);
+                            await pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data.sdp)));
+                            const answer = await pc.createAnswer();
+                            await pc.setLocalDescription(answer);
+                            await addDoc(signalsCol, { sender: currentUser.id, receiver: data.sender, type: 'answer', sdp: JSON.stringify(answer) });
+                        } else if (data.type === 'answer') {
+                            const pc = peerConnections[data.sender];
+                            if (pc) await pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data.sdp)));
+                        } else if (data.type === 'candidate') {
+                            const pc = peerConnections[data.sender];
+                            if (pc) await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)));
                         }
                     }
                 });
@@ -1215,10 +832,7 @@
             localChange = true;
             const roomRef = doc(db, 'rooms', currentRoomId);
             try {
-                await updateDoc(roomRef, {
-                    content: mainEditor.value,
-                    updatedAt: serverTimestamp()
-                });
+                await updateDoc(roomRef, { content: mainEditor.value, updatedAt: serverTimestamp() });
             } catch (e) {}
         });
 
@@ -1226,10 +840,7 @@
             const rect = canvas.getBoundingClientRect();
             const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
             const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-            return {
-                x: clientX - rect.left,
-                y: clientY - rect.top
-            };
+            return { x: clientX - rect.left, y: clientY - rect.top };
         }
 
         function startDrawing(e) {
@@ -1255,15 +866,11 @@
             if (!isDrawing) return;
             isDrawing = false;
             localDrawing = true;
-
             if (currentRoomId && isOnline) {
                 const roomRef = doc(db, 'rooms', currentRoomId);
                 try {
-                    await updateDoc(roomRef, {
-                        drawing: canvas.toDataURL(),
-                        updatedAt: serverTimestamp()
-                    });
-                } catch(e) {}
+                    await updateDoc(roomRef, { drawing: canvas.toDataURL(), updatedAt: serverTimestamp() });
+                } catch (e) {}
             }
         }
 
@@ -1271,7 +878,6 @@
         canvas.addEventListener('mousemove', draw);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mouseleave', stopDrawing);
-
         canvas.addEventListener('touchstart', startDrawing);
         canvas.addEventListener('touchmove', draw);
         canvas.addEventListener('touchend', stopDrawing);
@@ -1292,57 +898,71 @@
             if (presenceUnsubscribe) presenceUnsubscribe();
             if (signalUnsubscribe) signalUnsubscribe();
             if (chatUnsubscribe) chatUnsubscribe();
-
             if (currentRoomId && isOnline) {
                 try {
-                    const userPresenceRef = doc(db, 'rooms', currentRoomId, 'presence', currentUser.id);
-                    await deleteDoc(userPresenceRef);
-                } catch(e) {}
+                    const presenceRef = doc(db, 'rooms', currentRoomId, 'presence', currentUser.id);
+                    await deleteDoc(presenceRef);
+                } catch (e) {}
             }
-
             currentRoomId = null;
+            currentRoomBadge.textContent = '---';
             mainEditor.value = '';
-            chatMessagesList.innerHTML = '';
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            editorView.classList.add('hidden');
+            userBadge.classList.add('hidden');
+            userBadge.classList.remove('flex');
             lobbyView.classList.remove('hidden');
+            editorView.classList.add('hidden');
+            activeUsersList.innerHTML = '';
+            activeUsersCount.textContent = '0';
+            chatMessagesList.innerHTML = '';
             roomIdInput.value = '';
-            renderRecentRoomsUI();
         }
 
-        leaveRoomBtn.addEventListener('click', leaveCurrentRoom);
+        leaveRoomBtn.addEventListener('click', () => {
+            const modal = document.getElementById('custom-modal');
+            document.getElementById('modal-title').textContent = 'Raum verlassen';
+            document.getElementById('modal-message').textContent = 'Möchtest du den Raum wirklich verlassen?';
+            modal.classList.remove('hidden');
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+            const cleanup = () => {
+                confirmBtn.onclick = null;
+                cancelBtn.onclick = null;
+            };
+            confirmBtn.onclick = () => { modal.classList.add('hidden'); cleanup(); leaveCurrentRoom(); };
+            cancelBtn.onclick = () => { modal.classList.add('hidden'); cleanup(); };
+        });
 
-        clearTextBtn.addEventListener('click', () => {
-            showConfirmModal("Text leeren", "Möchtest du wirklich den gesamten Text im Editor löschen?", async () => {
-                mainEditor.value = '';
-                if (currentRoomId && isOnline) {
-                    const roomRef = doc(db, 'rooms', currentRoomId);
-                    await updateDoc(roomRef, { content: '' });
-                }
-            });
+        clearTextBtn.addEventListener('click', async () => {
+            if (!currentRoomId || !isOnline) return;
+            mainEditor.value = '';
+            localChange = true;
+            try { await updateDoc(doc(db, 'rooms', currentRoomId), { content: '' }); } catch (e) {}
         });
 
         exportTxtBtn.addEventListener('click', () => {
-            const blob = new Blob([mainEditor.value], { type: 'text/plain;charset=utf-8' });
+            if (!currentRoomId) return;
+            const text = mainEditor.value;
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `notiz-${currentRoomId || 'dokument'}.txt`;
+            a.download = `room-${currentRoomId}.txt`;
             a.click();
             URL.revokeObjectURL(url);
         });
 
-        copyRoomBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(currentRoomId);
-            copyRoomBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
-            setTimeout(() => { copyRoomBtn.innerHTML = '<i class="fa-regular fa-copy"></i>'; }, 1500);
+        copyRoomBtn.addEventListener('click', async () => {
+            if (!currentRoomId) return;
+            try {
+                await navigator.clipboard.writeText(currentRoomId);
+            } catch (e) {
+                const temp = document.createElement('textarea');
+                temp.value = currentRoomId;
+                document.body.appendChild(temp);
+                temp.select();
+                document.body.removeChild(temp);
+            }
         });
-
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        renderRecentRoomsUI();
     </script>
 </body>
 </html>
