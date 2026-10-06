@@ -14,6 +14,9 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         canvas { touch-action: none; }
+        .toggle-users-btn-closed {
+            margin-left: -1rem;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 h-screen flex flex-col overflow-hidden">
@@ -63,7 +66,7 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-user-pen"></i>
                             </span>
-                            <input type="text" id="username-input" placeholder="Name eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" id="username-input" placeholder="Name eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outli[...]
                         </div>
                     </div>
 
@@ -71,7 +74,7 @@
 
                     <!-- Raum erstellen -->
                     <div class="space-y-2">
-                        <button id="create-room-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md shadow-indigo-100 flex items-center justify-center space-x-2">
+                        <button id="create-room-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md shadow-indigo-100 flex i[...]
                             <i class="fa-solid fa-plus"></i>
                             <span>Neuen Raum erstellen</span>
                         </button>
@@ -89,14 +92,14 @@
                             <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-key"></i>
                             </span>
-                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <input type="text" id="room-id-input" placeholder="Raum-Code eingeben..." class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:o[...]
                         </div>
                         <div class="flex space-x-2">
-                            <button id="join-room-btn" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2">
+                            <button id="join-room-btn" class="flex-1 bg-slate-800 hover:bg-slate-900 text-white font-medium py-2.5 px-4 rounded-xl transition-all shadow-md flex items-center justif[...]
                                 <i class="fa-solid fa-arrow-right-to-bracket"></i>
                                 <span>Raum betreten</span>
                             </button>
-                            <button id="toggle-recent-modal-btn" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 px-3.5 py-2.5 rounded-xl font-medium text-sm flex items-center space-x-1.5 transition-all" title="Letzte Räume & Favoriten">
+                            <button id="toggle-recent-modal-btn" class="bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 px-3.5 py-2.5 rounded-xl font-medium text-sm flex item[...]
                                 <i class="fa-solid fa-star text-amber-500"></i>
                                 <span class="hidden sm:inline">Räume</span>
                             </button>
@@ -127,7 +130,7 @@
                 <!-- Editor Header / Toolbar -->
                 <div class="bg-white border-b border-slate-200 px-4 py-3 flex flex-wrap items-center justify-between gap-3 shrink-0">
                     <div class="flex items-center space-x-3">
-                        <button id="leave-room-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300">
+                        <button id="leave-room-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 b[...]
                             <i class="fa-solid fa-arrow-left"></i>
                             <span>Verlassen</span>
                         </button>
@@ -146,21 +149,21 @@
 
                     <div class="flex items-center space-x-2">
                         <!-- Voice Chat Button -->
-                        <button id="voice-chat-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300">
+                        <button id="voice-chat-btn" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 b[...]
                             <span id="voice-text">Voice Chat aus</span>
                         </button>
 
-                        <button id="clear-text-btn" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1 border border-rose-200">
+                        <button id="clear-text-btn" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1 border [...]
                             <i class="fa-solid fa-trash-can"></i>
                             <span>Text leeren</span>
                         </button>
 
-                        <button id="export-txt-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded-lg transition-all flex items-center space-x-1 shadow-sm">
+                        <button id="export-txt-btn" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium rounded-lg transition-all flex items-center space-x-1 shadow-[...]
                             <i class="fa-solid fa-download"></i>
                             <span>Speichern</span>
                         </button>
 
-                        <button id="open-canvas-btn" class="hidden px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-all items-center justify-center border border-slate-300 shadow-xs" title="Zeichenfläche öffnen">
+                        <button id="open-canvas-btn" class="hidden px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-all items-center justify-cent[...]
                             &lt;
                         </button>
                     </div>
@@ -168,7 +171,7 @@
 
                 <!-- Textarea -->
                 <div class="flex-1 p-4 bg-slate-50/50 flex flex-col overflow-hidden">
-                    <textarea id="main-editor" placeholder="Sicherheits-Info: Diese Chats sind öffentlich, nicht privat. Wenn also jemand weiß, was er tun muss, kann er alles in diesen Chats herausfinden." class="flex-1 w-full p-4 bg-white border border-slate-200 rounded-xl shadow-inner resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent custom-scrollbar"></textarea>
+                    <textarea id="main-editor" placeholder="Sicherheits-Info: Diese Chats sind öffentlich, nicht privat. Wenn also jemand weiß, was er tun muss, kann er alles in diesen Chats he[...]
                 </div>
             </div>
 
@@ -176,7 +179,7 @@
             <div id="canvas-container" class="w-full md:w-80 bg-white border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-64 md:h-full transition-all">
                 <div class="p-3 border-b border-slate-200 bg-slate-50 flex items-center justify-between shrink-0">
                     <div class="flex items-center space-x-2">
-                        <button id="close-canvas-btn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all" title="Malfläche einklappen">&gt;</button>
+                        <button id="close-canvas-btn" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all" title="Ma[...]
                         <h3 class="font-semibold text-xs text-slate-600 uppercase tracking-wider flex items-center space-x-2">
                             <i class="fa-solid fa-paintbrush text-indigo-500"></i>
                             <span>Zeichenfläche</span>
@@ -196,7 +199,7 @@
             </div>
 
             <!-- Äußerste rechte Spalte: Aktive Nutzer & Chat -->
-            <div id="chat-sidebar-container" class="w-full md:w-72 bg-slate-50 border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-80 md:h-full overflow-hidden transition-all duration-300">
+            <div id="chat-sidebar-container" class="w-full md:w-72 bg-slate-50 border-t md:border-t-0 md:border-l border-slate-200 flex flex-col shrink-0 h-80 md:h-full overflow-hidden transition[...]
                 <!-- Anwesend Bereich Header -->
                 <div class="p-3 border-b border-slate-200 bg-white flex items-center justify-between shrink-0">
                     <div class="flex items-center space-x-2">
@@ -207,7 +210,7 @@
                     </div>
                     <div class="flex items-center space-x-2">
                         <span id="active-users-count" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
-                        <button id="toggle-users-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center space-x-1" title="Anwesenden-Liste einklappen">
+                        <button id="toggle-users-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items[...]
                             <i id="toggle-users-icon" class="fa-solid fa-chevron-down"></i>
                         </button>
                     </div>
@@ -225,7 +228,7 @@
                             <i class="fa-solid fa-comments text-indigo-500"></i>
                             <span>Chat</span>
                         </h3>
-                        <button id="close-chat-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center space-x-1" title="Chat einklappen">
+                        <button id="close-chat-btn" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-c[...]
                             <i class="fa-solid fa-chevron-down"></i>
                         </button>
                     </div>
@@ -237,7 +240,7 @@
 
                     <!-- Chat Eingabe -->
                     <form id="chat-form" class="p-2 border-t border-slate-200 flex space-x-1.5 bg-white shrink-0">
-                        <input type="text" id="chat-input" placeholder="Nachricht Schreiben..." autocomplete="off" class="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                        <input type="text" id="chat-input" placeholder="Nachricht Schreiben..." autocomplete="off" class="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 border border-slate-300 rounded-[...]
                         <button type="submit" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-medium transition-colors">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
@@ -246,7 +249,7 @@
 
                 <!-- Container unten zum Wiederanzeigen des Chats -->
                 <div id="open-chat-container" class="hidden p-2 bg-slate-50 border-t border-slate-200 flex justify-end items-center shrink-0">
-                    <button id="open-chat-btn-bottom" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex items-center space-x-1" title="Chat öffnen">
+                    <button id="open-chat-btn-bottom" class="px-2 py-0.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold rounded border border-slate-300 transition-all flex item[...]
                         <i class="fa-solid fa-chevron-up"></i>
                     </button>
                 </div>
@@ -302,7 +305,7 @@
     <!-- Firebase SDKs via CDN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, collection, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, collection, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-fires[...]
 
         const fallbackConfig = {
             apiKey: "AIzaSyATCaZy2CJ7Ig3Eed841bo30ZRPH0kVtVM",
@@ -561,6 +564,8 @@
                 document.querySelector('.sidebar-title-text').classList.add('hidden');
                 activeUsersCount.classList.add('hidden');
                 document.getElementById('sidebar-footer-text').classList.add('hidden');
+                // Neue Klasse hinzufügen wenn beide geschlossen sind
+                toggleUsersBtn.classList.add('toggle-users-btn-closed');
             } else {
                 // Wieder normale Breite
                 chatSidebarContainer.classList.remove('md:w-12');
@@ -568,6 +573,8 @@
                 document.querySelector('.sidebar-title-text').classList.remove('hidden');
                 activeUsersCount.classList.remove('hidden');
                 document.getElementById('sidebar-footer-text').classList.remove('hidden');
+                // Klasse entfernen
+                toggleUsersBtn.classList.remove('toggle-users-btn-closed');
             }
         }
 
@@ -973,7 +980,7 @@
                 return `
                     <div data-msg-id="${m.id}" class="chat-msg flex flex-col ${isMe ? 'items-end' : 'items-start'} max-w-full">
                         <span class="text-[9px] text-slate-400 px-1 mb-0.5">${escapeHtml(displayName)}</span>
-                        <div class="px-2.5 py-1.5 rounded-xl text-xs max-w-[85%] break-words shadow-xs ${isMe ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-slate-200 text-slate-800 rounded-bl-none'}">
+                        <div class="px-2.5 py-1.5 rounded-xl text-xs max-w-[85%] break-words shadow-xs ${isMe ? 'bg-indigo-600 text-white rounded-br-none' : 'bg-slate-200 text-slate-800 rounded-b[...]
                             ${escapeHtml(m.text || '')}
                         </div>
                     </div>
@@ -998,351 +1005,3 @@
         }
 
         let localVoiceStream = null;
-        let isVoiceActive = false;
-        let audioContext = null;
-        let analyser = null;
-        let animFrameId = null;
-        const peerConnections = {};
-        const rtcConfig = {
-            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
-        };
-
-        const voiceChatBtn = document.getElementById('voice-chat-btn');
-        const voiceText = document.getElementById('voice-text');
-        const audioContainer = document.getElementById('audio-container');
-
-        voiceChatBtn.addEventListener('click', async () => {
-            if (!isVoiceActive) {
-                try {
-                    localVoiceStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    isVoiceActive = true;
-                    
-                    voiceChatBtn.className = "px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-emerald-200";
-                    voiceText.textContent = "Voice Chat an";
-
-                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    const source = audioContext.createMediaStreamSource(localVoiceStream);
-                    analyser = audioContext.createAnalyser();
-                    analyser.fftSize = 256;
-                    source.connect(analyser);
-
-                    const bufferLength = analyser.frequencyBinCount;
-                    const dataArray = new Uint8Array(bufferLength);
-                    const THRESHOLD = 15;
-
-                    function checkVolume() {
-                        if (!isVoiceActive) return;
-                        analyser.getByteFrequencyData(dataArray);
-                        let sum = 0;
-                        for (let i = 0; i < bufferLength; i++) {
-                            sum += dataArray[i];
-                        }
-                        const average = sum / bufferLength;
-
-                        const currentlySpeaking = average > THRESHOLD;
-                        if (userSpeakingStatus[currentUser.id] !== currentlySpeaking) {
-                            userSpeakingStatus[currentUser.id] = currentlySpeaking;
-                            updatePresence();
-                        }
-
-                        animFrameId = requestAnimationFrame(checkVolume);
-                    }
-
-                    checkVolume();
-
-                    await updatePresence();
-                    broadcastVoiceOffer();
-                } catch (e) {
-                    showError("Zugriff auf Mikrofon verweigert oder nicht unterstützt.");
-                }
-            } else {
-                stopVoiceChat();
-            }
-        });
-
-        function stopVoiceChat() {
-            if (animFrameId) {
-                cancelAnimationFrame(animFrameId);
-                animFrameId = null;
-            }
-            if (audioContext) {
-                audioContext.close();
-                audioContext = null;
-            }
-            if (localVoiceStream) {
-                localVoiceStream.getTracks().forEach(track => track.stop());
-                localVoiceStream = null;
-            }
-            isVoiceActive = false;
-            userSpeakingStatus[currentUser.id] = false;
-            voiceChatBtn.className = "px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg transition-all flex items-center space-x-1.5 border border-slate-300";
-            voiceText.textContent = "Voice Chat aus";
-
-            updatePresence();
-
-            Object.keys(peerConnections).forEach(peerId => {
-                peerConnections[peerId].close();
-                delete peerConnections[peerId];
-            });
-            Object.keys(userAudioCtxs).forEach(peerId => {
-                try { userAudioCtxs[peerId].close(); } catch(e) {}
-            });
-            userGainNodes = {};
-            userAudioCtxs = {};
-            audioContainer.innerHTML = '';
-        }
-
-        function createPeerConnection(targetUserId) {
-            if (peerConnections[targetUserId]) return peerConnections[targetUserId];
-
-            const pc = new RTCPeerConnection(rtcConfig);
-            peerConnections[targetUserId] = pc;
-
-            if (localVoiceStream) {
-                localVoiceStream.getTracks().forEach(track => pc.addTrack(track, localVoiceStream));
-            }
-
-            pc.ontrack = (event) => {
-                let audioEl = document.getElementById(`audio-${targetUserId}`);
-                if (!audioEl) {
-                    audioEl = document.createElement('audio');
-                    audioEl.id = `audio-${targetUserId}`;
-                    audioEl.autoplay = true;
-                    audioContainer.appendChild(audioEl);
-                }
-                audioEl.srcObject = event.streams[0];
-                
-                try {
-                    if (!userAudioCtxs[targetUserId]) {
-                        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                        const ctx = new AudioCtx();
-                        const source = ctx.createMediaStreamSource(event.streams[0]);
-                        const gainNode = ctx.createGain();
-                        
-                        const currentVol = userVolumes[targetUserId] !== undefined ? userVolumes[targetUserId] : 100;
-                        gainNode.gain.value = currentVol / 100;
-                        
-                        source.connect(gainNode);
-                        gainNode.connect(ctx.destination);
-                        
-                        userGainNodes[targetUserId] = gainNode;
-                        userAudioCtxs[targetUserId] = ctx;
-                        
-                        audioEl.muted = true;
-                    }
-                } catch(err) {
-                    console.warn("WebAudio GainNode Fehler:", err);
-                }
-
-                window.setUserVolume(targetUserId, userVolumes[targetUserId] !== undefined ? userVolumes[targetUserId] : 100);
-            };
-
-            pc.onicecandidate = (event) => {
-                if (event.candidate && currentRoomId) {
-                    addDoc(collection(db, 'rooms', currentRoomId, 'signals'), {
-                        sender: currentUser.id,
-                        receiver: targetUserId,
-                        type: 'candidate',
-                        candidate: JSON.stringify(event.candidate)
-                    });
-                }
-            };
-
-            return pc;
-        }
-
-        async function broadcastVoiceOffer() {
-            if (!currentRoomId) return;
-            const signalCol = collection(db, 'rooms', currentRoomId, 'signals');
-            await addDoc(signalCol, {
-                sender: currentUser.id,
-                receiver: 'ALL',
-                type: 'ping'
-            });
-        }
-
-        function setupVoiceChatSignaling() {
-            if (!currentRoomId) return;
-            const signalsCol = collection(db, 'rooms', currentRoomId, 'signals');
-
-            signalUnsubscribe = onSnapshot(signalsCol, (snapshot) => {
-                snapshot.docChanges().forEach(async (change) => {
-                    if (change.type === 'added') {
-                        const data = change.doc.data();
-                        if (data.sender === currentUser.id) return;
-
-                        if (data.receiver === currentUser.id || data.receiver === 'ALL') {
-                            if (data.type === 'ping' && isVoiceActive) {
-                                const pc = createPeerConnection(data.sender);
-                                const offer = await pc.createOffer();
-                                await pc.setLocalDescription(offer);
-                                await addDoc(signalsCol, {
-                                    sender: currentUser.id,
-                                    receiver: data.sender,
-                                    type: 'offer',
-                                    sdp: JSON.stringify(offer)
-                                });
-                            } else if (data.type === 'offer') {
-                                const pc = createPeerConnection(data.sender);
-                                await pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data.sdp)));
-                                const answer = await pc.createAnswer();
-                                await pc.setLocalDescription(answer);
-                                await addDoc(signalsCol, {
-                                    sender: currentUser.id,
-                                    receiver: data.sender,
-                                    type: 'answer',
-                                    sdp: JSON.stringify(answer)
-                                });
-                            } else if (data.type === 'answer') {
-                                const pc = peerConnections[data.sender];
-                                if (pc) {
-                                    await pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data.sdp)));
-                                }
-                            } else if (data.type === 'candidate') {
-                                const pc = peerConnections[data.sender];
-                                if (pc) {
-                                    await pc.addIceCandidate(new RTCIceCandidate(JSON.parse(data.candidate)));
-                                }
-                            }
-                        }
-                    }
-                });
-            });
-        }
-
-        mainEditor.addEventListener('input', async () => {
-            if (!currentRoomId || !isOnline) return;
-            localChange = true;
-            const roomRef = doc(db, 'rooms', currentRoomId);
-            try {
-                await updateDoc(roomRef, {
-                    content: mainEditor.value,
-                    updatedAt: serverTimestamp()
-                });
-            } catch (e) {}
-        });
-
-        function getMousePos(e) {
-            const rect = canvas.getBoundingClientRect();
-            const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-            const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-            return {
-                x: clientX - rect.left,
-                y: clientY - rect.top
-            };
-        }
-
-        function startDrawing(e) {
-            isDrawing = true;
-            const pos = getMousePos(e);
-            ctx.beginPath();
-            ctx.moveTo(pos.x, pos.y);
-            e.preventDefault();
-        }
-
-        function draw(e) {
-            if (!isDrawing) return;
-            const pos = getMousePos(e);
-            ctx.strokeStyle = brushColor.value;
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            ctx.lineTo(pos.x, pos.y);
-            ctx.stroke();
-            e.preventDefault();
-        }
-
-        async function stopDrawing() {
-            if (!isDrawing) return;
-            isDrawing = false;
-            localDrawing = true;
-
-            if (currentRoomId && isOnline) {
-                const roomRef = doc(db, 'rooms', currentRoomId);
-                try {
-                    await updateDoc(roomRef, {
-                        drawing: canvas.toDataURL(),
-                        updatedAt: serverTimestamp()
-                    });
-                } catch(e) {}
-            }
-        }
-
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseleave', stopDrawing);
-
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchmove', draw);
-        canvas.addEventListener('touchend', stopDrawing);
-
-        clearCanvasBtn.addEventListener('click', async () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            localDrawing = true;
-            if (currentRoomId && isOnline) {
-                const roomRef = doc(db, 'rooms', currentRoomId);
-                await updateDoc(roomRef, { drawing: '' });
-            }
-        });
-
-        async function leaveCurrentRoom() {
-            stopVoiceChat();
-            if (presenceInterval) clearInterval(presenceInterval);
-            if (textUnsubscribe) textUnsubscribe();
-            if (presenceUnsubscribe) presenceUnsubscribe();
-            if (signalUnsubscribe) signalUnsubscribe();
-            if (chatUnsubscribe) chatUnsubscribe();
-
-            if (currentRoomId && isOnline) {
-                try {
-                    const userPresenceRef = doc(db, 'rooms', currentRoomId, 'presence', currentUser.id);
-                    await deleteDoc(userPresenceRef);
-                } catch(e) {}
-            }
-
-            currentRoomId = null;
-            mainEditor.value = '';
-            chatMessagesList.innerHTML = '';
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            editorView.classList.add('hidden');
-            lobbyView.classList.remove('hidden');
-            roomIdInput.value = '';
-            renderRecentRoomsUI();
-        }
-
-        leaveRoomBtn.addEventListener('click', leaveCurrentRoom);
-
-        clearTextBtn.addEventListener('click', () => {
-            showConfirmModal("Text leeren", "Möchtest du wirklich den gesamten Text im Editor löschen?", async () => {
-                mainEditor.value = '';
-                if (currentRoomId && isOnline) {
-                    const roomRef = doc(db, 'rooms', currentRoomId);
-                    await updateDoc(roomRef, { content: '' });
-                }
-            });
-        });
-
-        exportTxtBtn.addEventListener('click', () => {
-            const blob = new Blob([mainEditor.value], { type: 'text/plain;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `notiz-${currentRoomId || 'dokument'}.txt`;
-            a.click();
-            URL.revokeObjectURL(url);
-        });
-
-        copyRoomBtn.addEventListener('click', () => {
-            navigator.clipboard.writeText(currentRoomId);
-            copyRoomBtn.innerHTML = '<i class="fa-solid fa-check text-emerald-600"></i>';
-            setTimeout(() => { copyRoomBtn.innerHTML = '<i class="fa-regular fa-copy"></i>'; }, 1500);
-        });
-
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-
-        renderRecentRoomsUI();
-    </script>
-</body>
-</html>
